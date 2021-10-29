@@ -1,0 +1,13 @@
+.App{
+  width: 100%;
+  
+  
+}
+
+.App canvas{
+  display: block;
+  margin: 0 auto;
+  background: lightblue;
+  
+}
+
