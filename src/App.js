@@ -8,7 +8,7 @@ import Classroom from './components/ClassroomList';
 import PopUp from './components/Popup';
 import axios from 'axios'
 
-const api = "http://localhost:3000/api/";
+const api = "https://btcn03-18127160.herokuapp.com/api/";
 
 
 function App() {
