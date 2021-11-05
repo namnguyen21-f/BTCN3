@@ -1,43 +1,52 @@
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import React , {useState , useEffect} from 'react'
+import HomePage from './pages/HomePage'
 import './App.css'
-import boardData from './data'
-import Header from './components/Header';
-import { Container } from '@mui/material';
-import Classroom from './components/ClassroomList';
-import PopUp from './components/Popup';
+import SignupPage from './pages/SignupPage';
+import LoginPage from './pages/LoginPage';
 import axios from 'axios'
+import React, {useEffect} from 'react'
+import api from './uri';
 
-const api = "https://btcn03-18127160.herokuapp.com/api/";
 
 
 function App() {
-  const [isPopup, setisPopup] = useState(false)
-  const [dataClass , setdataClass] = useState([])
 
   useEffect(() => {
-    axios.get(api +  'class/getAll')
-    .then(response => {
-      setdataClass(response.data.data);
-    });
+    if (localStorage.getItem('Authorization') === null){
+      window.location.href = "/login";
+    }else{
+      axios.post(api +  'atc' , {},  {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('Authorization'),
+        },
+      })
+      .then(response => {
+        const pn = window.location.pathname;
+        let message = response.data.message;
+        console.log(message)
+        if (message == "Token validated"){
+          if (pn === "/login" || pn === "/signup"){
+            window.location.href = "/";
+          }
+        }else{
+          if (pn !== "/login" &&  pn !== "/signup"){
+            window.location.href = "/login";
+          }
+        }
+      })
+    }
   }, [])
 
-  function onSubmitClassForm(data) {
-    console.log(data)
-    axios.post(api +  'class/new' , {teacher : data.teacher, className: data.className})
-    .then(response => {
-      setisPopup(false);
-    });
-  }
-
   return (
-    <div className="App">
-      {isPopup && <PopUp onSubmit={(data) => {onSubmitClassForm(data)}} onClose={() => {setisPopup(false)}}></PopUp>}
-      <Header className={"[CLC]PTUDWNC - 18KTPM1"} onAddClassHandle={() => {setisPopup(true)}}></Header>
-      <Container fixed>
-        <Classroom title="Classroom List" list={dataClass}></Classroom>
-      </Container>
-    </div>
+    <Router>
+      <div className="App">
+        <Route exact path="/" component={HomePage} /> 
+        <Route exact path="/signup" component={SignupPage}/> 
+
+        <Route exact path="/login" component={LoginPage}/> 
+      </div>
+    </Router>
   );
 }
 
