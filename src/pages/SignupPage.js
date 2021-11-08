@@ -4,7 +4,7 @@ import { Container ,Box, Grid, Link , TextField , Typography, FormControlLabel,
 import axios from 'axios'
 import { makeStyles } from '@mui/styles';
 import api from '../uri'
-
+import MenuItem from '@mui/material/MenuItem';
 const useStyles = makeStyles(() => ({
     paper: {
       marginTop: "2rem",
@@ -25,6 +25,18 @@ const useStyles = makeStyles(() => ({
     }
   }));
 
+
+const roleUser = [
+  {
+    value: 'User',
+    label: 'Student',
+  },
+  {
+    value: 'Teacher',
+    label: 'Teacher',
+  },
+];
+
 function SignupPage() {
   const [firstName, setfirstName] = useState("")
   const [lastName, setlastName] = useState("")
@@ -32,6 +44,7 @@ function SignupPage() {
   const [password, setPassword] = useState("")
   const [userName, setuserName] = useState("")
   const [phone, setPhone] = useState("")
+  const [role, setRole] = useState("Student")
 
   const classes = useStyles();
   
@@ -47,7 +60,8 @@ function SignupPage() {
       email,
       password,
       userName,
-      phone 
+      phone,
+      role: role.toLowerCase(),
     }
     axios.post(api +  'signup' , data)
     .then(response => {
@@ -133,7 +147,6 @@ function SignupPage() {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-           
                 fullWidth
                 name="phone"
                 label="Phone"
@@ -142,6 +155,21 @@ function SignupPage() {
                 onChange={(e) => {setPhone(e.target.value)}}
                 value={phone}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="outlined-select-currency"
+                select
+                label="Role"
+                value={role}
+                onChange={(e) => {setRole(e.target.value)}}
+              >
+                {roleUser.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
 
             <Grid item xs={12}>
