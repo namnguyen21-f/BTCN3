@@ -12,7 +12,7 @@ import api from './uri';
 function App() {
 
   useEffect(() => {
-    if (localStorage.getItem('Authorization') === null){
+    if (localStorage.getItem('Authorization') === null && window.location.pathname == "/"){
       window.location.href = "/login";
     }else{
       axios.post(api +  'atc' , {},  {
@@ -24,7 +24,7 @@ function App() {
       .then(response => {
         const pn = window.location.pathname;
         let message = response.data.message;
-        console.log(message)
+     
         if (message == "Token validated"){
           if (pn === "/login" || pn === "/signup"){
             window.location.href = "/";
