@@ -4,6 +4,8 @@ import { Container ,Box, Grid, Link , TextField , Typography, FormControlLabel,
 import axios from 'axios'
 import { makeStyles } from '@mui/styles';
 import api from '../uri';
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from "react-facebook-login";
 
 const useStyles = makeStyles(() => ({
     paper: {
@@ -54,6 +56,30 @@ function LoginPage() {
       }
       
     });
+  }
+
+  const responseGoogle= response=>{
+    console.log(response);
+    axios({
+      method: "POST",
+      url: api + 'googleLogin',
+      data: {tokenId: response.tokenId}
+    })
+    .then(response=>{
+      console.log("Google login successful, client side", response);
+    })
+  }
+
+  const responseFacebook= response=>{
+    console.log(response);
+    axios({
+      method: "POST",
+      url: api + 'facebookLogin',
+      data: {accessToken: response.accessToken, userID: response.userID}
+    })
+    .then(response=>{
+      console.log("Facebook login successful, client side", response);
+    })
   }
 
   return (
@@ -120,6 +146,17 @@ function LoginPage() {
             </Grid>
           </Grid>
         </form>
+        <GoogleLogin
+          clientId="405769286115-ccpu4vsplvrfttij8im3r7hbhsoupg1h.apps.googleusercontent.com"
+          buttonText="Login with Google"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={'single_host_origin'}
+        />
+        <FacebookLogin
+          appId="933127567412923"
+          autoLoad={false}
+          callback={responseFacebook}/>
       </div>
       <Box mt={5}>
     
