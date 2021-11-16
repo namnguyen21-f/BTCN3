@@ -37,12 +37,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function PopUp({onSubmit, onClose}) {
+export default function PopUp({onClose, children}) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
-
-    
-
     return (
         <div>
             <Modal
@@ -56,7 +53,7 @@ export default function PopUp({onSubmit, onClose}) {
                             <ClearIcon></ClearIcon>
                         </IconButton>
                     </div>
-                    <AddClassForm onSubmit={onSubmit}></AddClassForm>
+                    {children}
                 </div>
             </Modal>
         </div>

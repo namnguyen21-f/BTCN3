@@ -10,7 +10,7 @@ import api from './uri';
 
 
 function App() {
-
+  
   useEffect(() => {
     if (localStorage.getItem('Authorization') === null && window.location.pathname == "/"){
       window.location.href = "/login";
