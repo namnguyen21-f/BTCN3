@@ -4,9 +4,7 @@ import { Container } from '@mui/material';
 import Classroom from '../components/ClassroomList';
 import PopUp from '../components/Popup';
 import axios from 'axios'
-
-const api = "https://btcn03-18127160.herokuapp.com/api/";
-
+import api from '../uri';
 
 function HomePage() {
   const [isPopup, setisPopup] = useState(false)
@@ -20,11 +18,24 @@ function HomePage() {
   }, [])
 
   function onSubmitClassForm(data) {
-    console.log(data)
-    axios.post(api +  'class/new' , {teacher : data.teacher, className: data.className})
+    
+    axios.post(api +  'class/new' , {teacher : data.teacher, className: data.className} ,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('Authorization'),
+      },
+    })
     .then(response => {
       setisPopup(false);
-    });
+    }).catch(err => {
+      if (err.response.data.message === "Student does not have permisson"){
+        alert("Student does not have permisson") 
+      }else {
+        alert("Something wrong") 
+      }
+      setisPopup(false);
+    });;
   }
 
   return (
