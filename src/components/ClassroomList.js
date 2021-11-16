@@ -10,6 +10,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import ClassDetail from '../pages/ClassDetail';
+import api from '../uri';
 const useStyles = makeStyles({
     root: {
       padding: "1rem 0",
@@ -32,13 +33,14 @@ const useStyles = makeStyles({
 
 
 const classDetail= (classId)=>{
-    const cls= {};
-    axios.get(`/class/${classId}/classDetail`)
+    let cls= {};
+    axios.get(api+ `/class/${classId}/classDetail`)
     .then(response=>{
         cls= response.data;
         window.location.href= `/classDetail`
-    })
-    return <ClassDetail cls= {cls}></ClassDetail>
+    });
+    console.log(cls);
+    <ClassDetail cls= {cls}></ClassDetail>
 }
 
 

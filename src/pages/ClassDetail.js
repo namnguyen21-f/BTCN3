@@ -1,10 +1,14 @@
 import Header from '../components/Header';
+import SendEmail from '../components/SendEmail';
+
+
 
 const ClassDetail= ({cls})=>{
-    <Header flex justifyContent={"center"} className={cls.className}>
-        <h3>Stream</h3>
-        <h3>Classwork</h3>
-    </Header>
+    return(
+        <Header flex justifyContent={"center"}>
+            <SendEmail classId= {cls}></SendEmail>
+        </Header>
+    )
 }
 
 export default ClassDetail;

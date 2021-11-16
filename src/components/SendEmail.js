@@ -1,13 +1,19 @@
+import axios from "axios";
 import React, {useState} from "react";
+import api from '../uri';
 
-const SendEmail= ()=>{
+const SendEmail= ({classId})=>{
     const [emailTo, setEmailTo]= useState("");
     const handleChangeEmail= event=>{
         setEmailTo(event.target.value);
     }
     const handleSubmit= event=>{
         event.preventDefault();
-        console.log(emailTo);
+        axios.post(api+ `/class/${classId}/invite`, {email: emailTo})
+        .then(response=>{
+            console.log("Successful", response.data);
+        })
+        .catch(err=> console.log("err", err.response.data.message));
     }
     return (
         <>

@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import axios from 'axios'
 import React, {useEffect} from 'react'
 import api from './uri';
+import ClassDetail from './pages/ClassDetail';
 
 
 
@@ -45,7 +46,7 @@ function App() {
         <Route exact path="/signup" component={SignupPage}/> 
 
         <Route exact path="/login" component={LoginPage}/> 
-        <Route exact path="/classDetail"/>
+        <Route exact path="/classDetail" component={ClassDetail}/>
       </div>
     </Router>
   );
