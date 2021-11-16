@@ -45,6 +45,7 @@ function App() {
         <Route exact path="/signup" component={SignupPage}/> 
 
         <Route exact path="/login" component={LoginPage}/> 
+        <Route exact path="/classDetail"/>
       </div>
     </Router>
   );

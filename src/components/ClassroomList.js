@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React , {useState} from 'react'
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -8,6 +8,8 @@ import { deepOrange, deepPurple } from '@mui/material/colors';
 import { makeStyles } from '@mui/styles';
 import ListSubheader from '@mui/material/ListSubheader';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
+import ClassDetail from '../pages/ClassDetail';
 const useStyles = makeStyles({
     root: {
       padding: "1rem 0",
@@ -29,6 +31,17 @@ const useStyles = makeStyles({
   });
 
 
+const classDetail= (classId)=>{
+    const cls= {};
+    axios.get(`/class/${classId}/classDetail`)
+    .then(response=>{
+        cls= response.data;
+        window.location.href= `/classDetail`
+    })
+    return <ClassDetail cls= {cls}></ClassDetail>
+}
+
+
 export default function Classroom({list, title}){
     const classes = useStyles();
     return (
@@ -45,21 +58,21 @@ export default function Classroom({list, title}){
                 >
                 {list.map((ele,idx) => {
                     return (
-                        <ListItem className={classes.listItem} style={{alignItems: "unset"}}>
-                            <ListItemAvatar >
-                                <Avatar sx={{ bgcolor: deepOrange[500] }}>C</Avatar>
-                            </ListItemAvatar>
-                            <div>
-                                <ListItemText 
-                                    primary={ele.className} 
-                                    secondary={new Date(ele.createdAt).toISOString().substring(0, 10)} 
-                                    style={{marginTop: 0}}/>
-                                <Typography variant="body2"  color="black">
-                                    Teacher: {ele.teacher}
-                                </Typography>
-                            </div>
-                            
-                        </ListItem>
+                            <ListItem className={classes.listItem} style={{alignItems: "unset"}} onClick={()=> classDetail(ele._id)}>
+                                <ListItemAvatar >
+                                    <Avatar sx={{ bgcolor: deepOrange[500] }}>C</Avatar>
+                                </ListItemAvatar>
+                                <div>
+                                    <ListItemText 
+                                        primary={ele.className} 
+                                        secondary={new Date(ele.createdAt).toISOString().substring(0, 10)} 
+                                        style={{marginTop: 0}}/>
+                                    <Typography variant="body2"  color="black">
+                                        Teacher: {ele.teacher}
+                                    </Typography>
+                                </div>
+                                
+                            </ListItem>
                     )
                 })}
                 
