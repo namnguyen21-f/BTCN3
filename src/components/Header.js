@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { makeStyles } from '@mui/styles';
@@ -11,11 +11,18 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Avatar from '@mui/material/Avatar';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import { TextField } from '@mui/material';
+
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+
 import Tooltip from '@mui/material/Tooltip';
 const useStyles = makeStyles({
     root: {
       padding: ".5rem 2rem",
-      borderBottom: "1px solid black"
+      borderBottom: "1px solid black",
+      position: "relative",
     },
     input: {
         padding: 0,
@@ -25,8 +32,21 @@ const useStyles = makeStyles({
     }
   });
 
-export default function Header({className , onAddClassHandle}){
+const style = {
+    width: '100%',
+    maxWidth: 260,
+    bgcolor: 'background.paper',
+    top: "100%",
+    right: "0",
+    position: "absolute",
+    zIndex: "999",
+    boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
+};
+
+export default function Header({className , onAddClassHandle, onManageProfile}){
     const classes = useStyles();
+    const [isOpen , setIsOpen] = useState(false);
+
     return (
         <header className={classes.root}>
             <Box sx={{ flexGrow: 1 }}>
@@ -65,11 +85,25 @@ export default function Header({className , onAddClassHandle}){
                                     <AddIcon></AddIcon>
                                 </IconButton>
                             </Tooltip>
-                            <Avatar sx={{ bgcolor: deepOrange[500] }}>H</Avatar>
+                            <Avatar onClick={() => {setIsOpen(!isOpen)}} sx={{ bgcolor: deepOrange[500] }}>H</Avatar>
                         </Box>
                     </Grid>
                 </Grid>
             </Box>
+            {isOpen && <List sx={style} component="nav" aria-label="mailbox folders">
+                <ListItem button>
+                    <ListItemText onClick={() => {onManageProfile()}} primary="Profile" />
+                </ListItem>
+                <Divider />
+                <ListItem button >
+                    <ListItemText primary="Class" />
+                </ListItem>
+                <Divider/>
+                <ListItem button>
+                    <ListItemText primary="Trash" />
+                </ListItem>
+                <Divider/>
+            </List>}
         </header>
     )
 

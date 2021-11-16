@@ -11,7 +11,7 @@ import ClassDetail from './pages/ClassDetail';
 
 
 function App() {
-
+  
   useEffect(() => {
     if (localStorage.getItem('Authorization') === null && window.location.pathname == "/"){
       window.location.href = "/login";
