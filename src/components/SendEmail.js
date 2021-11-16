@@ -18,8 +18,8 @@ const SendEmail= ({classId})=>{
     return (
         <>
             <form onSubmit= {handleSubmit}>
-                <label>Enter email</label>
-                <input type="text" placeholder="enter email" value={emailTo} onChange={handleChangeEmail}></input>
+                <label>Enter email you want invite</label>
+                <input type="text" placeholder="Enter email" value={emailTo} onChange={handleChangeEmail}></input>
                 <button type="submit">Send email</button>
             </form>
         </>
