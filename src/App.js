@@ -28,7 +28,7 @@ function DecodeLink(){
 function DecodeUrlLink(){
   const { classId } = useParams();
   useEffect(() => {
-    axios.get("https://midtermproject160220.herokuapp.com/api/" +  `class/${classId}/inviteUrl` , {} ,
+    axios.get("https://midtermproject160220.herokuapp.com/api/" +  `class/${classId}/inviteUrl` ,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -41,7 +41,8 @@ function DecodeUrlLink(){
       window.location.href = "/" + classId + "/classDetail";
     })
     .catch(err=> {
-      alert("error: " + err.response.data.message)
+      alert("error: " + err.response.data.message);
+      window.location.href = "/login";
       });
   },[])
   return <p></p>
