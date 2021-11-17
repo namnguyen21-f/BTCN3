@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, {useState} from "react";
 import api from '../uri';
+import { Container ,Box, Grid, Link , TextField , Typography, FormControlLabel,
+    Checkbox, Button, Copyright} from '@mui/material';
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const SendEmail= ({classId})=>{
     const [emailTo, setEmailTo]= useState("");
@@ -24,13 +27,26 @@ const SendEmail= ({classId})=>{
         .catch(err=> console.log("err", err.response.data.message));
     }
 
+
     return (
         <>
-            <form onSubmit= {handleSubmit}>
-                <label>Enter email you want invite</label>
-                <input type="text" placeholder="Enter email" value={emailTo} onChange={handleChangeEmail}></input>
-                <button type="submit">Send email</button>
-            </form>
+            <Container  component="main" maxWidth="xs">
+                <form onSubmit= {handleSubmit} noValidate>
+                    <Grid item xs={12}>
+                            <TextField
+                                value={emailTo}
+                                onChange={handleChangeEmail}
+                                label="Enter email invite"
+                            />
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary">
+                            Send
+                        </Button>
+                    </Grid>
+                </form>
+            </Container>
         </>
     )
 }

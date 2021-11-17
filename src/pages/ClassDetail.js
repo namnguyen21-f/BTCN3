@@ -23,7 +23,7 @@ const ClassDetail= ()=>{
 
     return(
         <div className="App">
-            <Header flex justifyContent={"center"}></Header>
+            {cls && <Header flex justifyContent={"center"} className={cls.className}></Header>}
             {cls && <Container fixed> 
                 <SendEmail classId= {cls._id}></SendEmail>
             </Container>}

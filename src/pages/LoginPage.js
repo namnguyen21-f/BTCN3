@@ -66,6 +66,9 @@ function LoginPage() {
       data: {tokenId: response.tokenId}
     })
     .then(response=>{
+      let token = response.data.token;
+      localStorage.setItem('Authorization', 'Bearer ' + token);
+      window.location.href = "/";
       console.log("Google login successful, client side", response);
     })
   }
@@ -78,6 +81,9 @@ function LoginPage() {
       data: {accessToken: response.accessToken, userID: response.userID}
     })
     .then(response=>{
+      let token = response.data.token;
+      localStorage.setItem('Authorization', 'Bearer ' + token);
+      window.location.href = "/";
       console.log("Facebook login successful, client side", response);
     })
   }
