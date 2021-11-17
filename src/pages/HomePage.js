@@ -62,11 +62,11 @@ function HomePage() {
   return (
     <div className="App">
       {isPopup && 
-        <PopUp onSubmit={(data) => {onSubmitClassForm(data)}} onClose={() => {setisPopup(false)}}>
+        <PopUp onClose={() => {setisPopup(false)}}>
           <AddClassForm onSubmit={onSubmitClassForm}></AddClassForm>
         </PopUp>}
       {isPopupProfile && 
-        <PopUp onSubmit={(data) => {onSubmitClassForm(data)}} onClose={() => {setisPopupProfile(false)}}>
+        <PopUp onClose={() => {setisPopupProfile(false)}}>
           <ManageProfileForm onSubmit={onSubmitProfileForm}></ManageProfileForm>
         </PopUp>}
       <Header className={"[CLC]PTUDWNC - 18KTPM1"} 

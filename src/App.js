@@ -17,10 +17,26 @@ function DecodeLink(){
     axios.get("https://midtermproject160220.herokuapp.com/api/" +  `class/${classId}/invite/${id}` , {}
     )
     .then(response => {
-      console.log(response)
+      
       alert(response.data.message + " You are in the class");
       window.location.href = "/" + classId + "/classDetail";
     })
+  },[])
+  return <p></p>
+}
+
+function DecodeUrlLink(){
+  const { classId } = useParams();
+  useEffect(() => {
+    axios.get("https://midtermproject160220.herokuapp.com/api/" +  `class/${classId}/inviteUrl` , {}
+    )
+    .then(response => {
+      alert(response.data.message + " You are in the class");
+      window.location.href = "/" + classId + "/classDetail";
+    })
+    .catch(err=> {
+      alert("error: " + err.response.data.message)
+      });
   },[])
   return <p></p>
 }
@@ -64,6 +80,7 @@ function App() {
         <Route exact path="/:id/classDetail" component={ClassDetail}/>
        
         <Route path="/class/:classId/invite/:id" component={DecodeLink}/>
+        <Route path="/class/:classId/inviteUrl" component={DecodeUrlLink}/>
       </div>
     </Router>
   );

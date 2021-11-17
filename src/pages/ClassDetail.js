@@ -1,8 +1,11 @@
-import { Fragment } from 'react';
+import React , {useState , useEffect} from 'react'
 import Header from '../components/Header';
+import AddClassForm from '../components/AddClassForm';
+import ManageProfileForm from '../components/ManageProfileForm';
 import SendEmail from '../components/SendEmail';
 import { Container } from '@mui/material';
-import React , {useState , useEffect} from 'react'
+import PopUp from '../components/Popup';
+
 import { useHistory, useParams } from 'react-router-dom'
 import axios from 'axios'
 import api from '../uri';
@@ -10,6 +13,8 @@ import api from '../uri';
 const ClassDetail= ()=>{
     const { id } = useParams();
     const [cls , setCls] = useState(null);
+    const [isPopup, setisPopup] = useState(false)
+    const [isPopupProfile, setisPopupProfile] = useState(false)
     
     useEffect(() => {
         axios.get(api+ `class/${id}/classDetail`)
@@ -21,10 +26,62 @@ const ClassDetail= ()=>{
         
     }, [])
 
+    function onSubmitClassForm(data) {
+    
+        axios.post(api +  'class/new' , {teacher : data.teacher, className: data.className} ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('Authorization'),
+          },
+        })
+        .then(response => {
+          setisPopup(false);
+        }).catch(err => {
+          if (err.response.data.message === "Student does not have permisson"){
+            alert("Student does not have permisson") 
+          }else {
+            alert("Something wrong") 
+          }
+          setisPopup(false);
+        });;
+    }
+    
+    function onSubmitProfileForm(data) {
+    axios.post(api +  'changeProfile' , data ,
+    {
+        headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('Authorization'),
+        },
+    })
+    .then(response => {
+        setisPopupProfile(false);
+    }).catch(err => {
+        if (err.response.data.message === "User is not valid"){
+        alert("User is not valid") 
+        }
+        setisPopupProfile(false);
+    });;
+    }
+
     return(
         <div className="App">
-            {cls && <Header flex justifyContent={"center"} className={cls.className}></Header>}
+            {isPopup && 
+                <PopUp onSubmit={(data) => {onSubmitClassForm(data)}} onClose={() => {setisPopup(false)}}>
+                    <AddClassForm onSubmit={onSubmitClassForm}></AddClassForm>
+                </PopUp>}
+            {isPopupProfile && 
+                <PopUp onSubmit={(data) => {onSubmitClassForm(data)}} onClose={() => {setisPopupProfile(false)}}>
+                    <ManageProfileForm onSubmit={onSubmitProfileForm}></ManageProfileForm>
+                </PopUp>}
+            {cls && 
+                <Header className={"[CLC]PTUDWNC - 18KTPM1"} 
+                    onManageProfile = {() => {setisPopupProfile(true)}}
+                    onAddClassHandle={() => {setisPopup(true)}}>
+                </Header>}
             {cls && <Container fixed> 
+                
                 <SendEmail classId= {cls._id}></SendEmail>
             </Container>}
         </div>
