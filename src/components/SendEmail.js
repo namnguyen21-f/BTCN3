@@ -9,12 +9,21 @@ const SendEmail= ({classId})=>{
     }
     const handleSubmit= event=>{
         event.preventDefault();
-        axios.post(api+ `/class/${classId}/invite`, {email: emailTo})
+        console.log(classId);
+        axios.post("https://midtermproject160220.herokuapp.com/api/" + `class/${classId}/invite`
+            , {email: emailTo} ,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('Authorization'),
+                },
+            })
         .then(response=>{
             console.log("Successful", response.data);
         })
         .catch(err=> console.log("err", err.response.data.message));
     }
+
     return (
         <>
             <form onSubmit= {handleSubmit}>

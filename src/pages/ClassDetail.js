@@ -10,13 +10,13 @@ import api from '../uri';
 const ClassDetail= ()=>{
     const { id } = useParams();
     const [cls , setCls] = useState(null);
-
+    
     useEffect(() => {
-        axios.get(api+ `/class/${id}/classDetail`)
+        axios.get(api+ `class/${id}/classDetail`)
         .then(response=>{
             let cls= response.data;
             setCls(cls);
-            
+          
         });
         
     }, [])
@@ -24,9 +24,9 @@ const ClassDetail= ()=>{
     return(
         <div className="App">
             <Header flex justifyContent={"center"}></Header>
-            <Container fixed> 
-                <SendEmail classId= {cls}></SendEmail>
-            </Container>
+            {cls && <Container fixed> 
+                <SendEmail classId= {cls._id}></SendEmail>
+            </Container>}
         </div>
         
     )
