@@ -33,7 +33,7 @@ function DecodeUrlLink(){
       headers: {
         'Content-Type': 'application/json',
         'Authorization': localStorage.getItem('Authorization'),
-    },
+      },
     }
     )
     .then(response => {
