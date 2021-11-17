@@ -10,7 +10,7 @@ const ShowListTS= ({classId})=>{
     const [list, setList]= useState(null);
     const handleSubmit= event=>{
         event.preventDefault();
-        axios.post("https://midtermproject160220.herokuapp.com/api/" + `class/${classId}/getClassAte`,
+        axios.post("https://midtermproject160220.herokuapp.com/api/" + `class/${classId}/getClassAte`, {} , 
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ const ShowListTS= ({classId})=>{
     }
     return (
         <>
-            <form onSubmit= {handleSubmit} noValidate>
+            <form onSubmit= {handleSubmit} noValidate style={{marginTop: "2rem"}}>
                 <Button
                     type="submit"
                     variant="contained"
@@ -33,12 +33,12 @@ const ShowListTS= ({classId})=>{
                     Show List Teacher And Student
                 </Button>
             </form>
-            {list && <List>
+                {list && <List>
                         <h2>Teacher</h2>
                         {list.t_arr.map((ele,idx) => {
                             return (
                                 <ListItemText 
-                                    primary={ele.userName} 
+                                    primary={ele.email} 
                                     style={{marginTop: 0}}/>
                             )
                         })}
@@ -46,7 +46,7 @@ const ShowListTS= ({classId})=>{
                         {list.s_arr.map((ele,idx) => {
                             return (
                                 <ListItemText 
-                                    primary={ele.userName} 
+                                    primary={ele.email} 
                                     style={{marginTop: 0}}/>
                             )
                         })}
