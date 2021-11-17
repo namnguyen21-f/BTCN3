@@ -1,13 +1,18 @@
+import { Fragment } from 'react';
 import Header from '../components/Header';
 import SendEmail from '../components/SendEmail';
-
+import { Container } from '@mui/material';
 
 
 const ClassDetail= ({cls})=>{
     return(
-        <Header flex justifyContent={"center"}>
-            <SendEmail classId= {cls}></SendEmail>
-        </Header>
+        <div className="App">
+            <Header flex justifyContent={"center"}></Header>
+            <Container fixed> 
+                <SendEmail classId= {cls}></SendEmail>
+            </Container>
+        </div>
+        
     )
 }
 
