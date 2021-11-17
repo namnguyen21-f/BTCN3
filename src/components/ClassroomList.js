@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import ClassDetail from '../pages/ClassDetail';
 import api from '../uri';
+
+import { Link } from "react-router-dom";
 const useStyles = makeStyles({
     root: {
       padding: "1rem 0",
@@ -32,18 +34,6 @@ const useStyles = makeStyles({
   });
 
 
-const classDetail= (classId)=>{
-    let cls= {};
-    axios.get(api+ `/class/${classId}/classDetail`)
-    .then(response=>{
-        cls= response.data;
-        window.location.href= `/classDetail`
-    });
-    console.log(cls);
-    <ClassDetail cls= {cls}></ClassDetail>
-}
-
-
 export default function Classroom({list, title}){
     const classes = useStyles();
     return (
@@ -60,7 +50,7 @@ export default function Classroom({list, title}){
                 >
                 {list.map((ele,idx) => {
                     return (
-                            <ListItem className={classes.listItem} style={{alignItems: "unset"}} onClick={()=> classDetail(ele._id)}>
+                            <ListItem button component={Link} to={"/" + ele._id + "/classDetail"} className={classes.listItem} style={{alignItems: "unset"}}>
                                 <ListItemAvatar >
                                     <Avatar sx={{ bgcolor: deepOrange[500] }}>C</Avatar>
                                 </ListItemAvatar>
@@ -73,7 +63,6 @@ export default function Classroom({list, title}){
                                         Teacher: {ele.teacher}
                                     </Typography>
                                 </div>
-                                
                             </ListItem>
                     )
                 })}

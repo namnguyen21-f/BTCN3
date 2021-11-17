@@ -7,6 +7,7 @@ import axios from 'axios'
 import React, {useEffect} from 'react'
 import api from './uri';
 import ClassDetail from './pages/ClassDetail';
+import  { Redirect } from 'react-router-dom'
 
 
 
@@ -46,7 +47,9 @@ function App() {
         <Route exact path="/signup" component={SignupPage}/> 
 
         <Route exact path="/login" component={LoginPage}/> 
-        <Route exact path="/classDetail" component={ClassDetail}/>
+        <Route exact path="/:id/classDetail" component={ClassDetail}/>
+        {/* <Route exact path="/classDetail" component={ClassDetail}/>
+        <Route path="/api/class/:classId/invite/:id" component={}/> */}
       </div>
     </Router>
   );
