@@ -28,7 +28,13 @@ function DecodeLink(){
 function DecodeUrlLink(){
   const { classId } = useParams();
   useEffect(() => {
-    axios.get("https://midtermproject160220.herokuapp.com/api/" +  `class/${classId}/inviteUrl` , {}
+    axios.get("https://midtermproject160220.herokuapp.com/api/" +  `class/${classId}/inviteUrl` , {} ,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('Authorization'),
+    },
+    }
     )
     .then(response => {
       alert(response.data.message + " You are in the class");
