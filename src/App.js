@@ -8,8 +8,22 @@ import React, {useEffect} from 'react'
 import api from './uri';
 import ClassDetail from './pages/ClassDetail';
 import  { Redirect } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
+function DecodeLink(){
 
+  const { id , classId } = useParams();
+  useEffect(() => {
+    axios.get("https://midtermproject160220.herokuapp.com/api/" +  `class/${classId}/invite/${id}` , {}
+    )
+    .then(response => {
+      console.log(response)
+      alert(response.data.message + " You are in the class");
+      window.location.href = "/" + classId + "/classDetail";
+    })
+  },[])
+  return <p></p>
+}
 
 function App() {
   
@@ -48,8 +62,8 @@ function App() {
 
         <Route exact path="/login" component={LoginPage}/> 
         <Route exact path="/:id/classDetail" component={ClassDetail}/>
-        {/* <Route exact path="/classDetail" component={ClassDetail}/>
-        <Route path="/api/class/:classId/invite/:id" component={}/> */}
+       
+        <Route path="/class/:classId/invite/:id" component={DecodeLink}/>
       </div>
     </Router>
   );

@@ -9,7 +9,7 @@ const SendEmail= ({classId})=>{
     }
     const handleSubmit= event=>{
         event.preventDefault();
-        console.log(classId);
+    
         axios.post("https://midtermproject160220.herokuapp.com/api/" + `class/${classId}/invite`
             , {email: emailTo} ,
             {
@@ -19,7 +19,7 @@ const SendEmail= ({classId})=>{
                 },
             })
         .then(response=>{
-            console.log("Successful", response.data);
+            alert("Successful", response.data.message);
         })
         .catch(err=> console.log("err", err.response.data.message));
     }
