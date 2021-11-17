@@ -6,6 +6,7 @@ import React , {useState , useEffect} from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import axios from 'axios'
 import api from '../uri';
+import ShowListTS from '../components/ShowListTS';
 
 const ClassDetail= ()=>{
     const { id } = useParams();
@@ -26,6 +27,7 @@ const ClassDetail= ()=>{
             {cls && <Header flex justifyContent={"center"} className={cls.className}></Header>}
             {cls && <Container fixed> 
                 <SendEmail classId= {cls._id}></SendEmail>
+                <ShowListTS classId= {cls._id}></ShowListTS>
             </Container>}
         </div>
         
