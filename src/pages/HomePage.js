@@ -69,7 +69,7 @@ function HomePage() {
         <PopUp onClose={() => {setisPopupProfile(false)}}>
           <ManageProfileForm onSubmit={onSubmitProfileForm}></ManageProfileForm>
         </PopUp>}
-      <Header className={"[CLC]PTUDWNC - 18KTPM1"} 
+      <Header
         onManageProfile = {() => {setisPopupProfile(true)}}
         onAddClassHandle={() => {setisPopup(true)}}></Header>
       <Container fixed>

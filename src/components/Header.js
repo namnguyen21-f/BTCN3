@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { makeStyles } from '@mui/styles';
@@ -16,6 +16,8 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
+import { Link } from "react-router-dom";
+
 
 import Tooltip from '@mui/material/Tooltip';
 const useStyles = makeStyles({
@@ -43,9 +45,15 @@ const style = {
     boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
 };
 
-export default function Header({className , onAddClassHandle, onManageProfile}){
+export default function Header({className , onAddClassHandle, onManageProfile, classId}){
     const classes = useStyles();
     const [isOpen , setIsOpen] = useState(false);
+    let clsName = "[CLC]PTUDWNC - 18KTPM1";
+    let flag= false;
+    if(className){
+        flag= true;
+        clsName= className;
+    }
 
     return (
         <header className={classes.root}>
@@ -58,13 +66,20 @@ export default function Header({className , onAddClassHandle, onManageProfile}){
                             </IconButton>
                             
                             <Typography ml={2} variant="h5" component="div">
-                                {className}
+                                {clsName}
                             </Typography>
                         </Box>
                     </Grid>
-                    <Grid item >
-                        
-                    </Grid>
+                    {flag && 
+                        <List>
+                            <ListItem button component= {Link} to={"/" + classId + "/classDetail"}>
+                                <ListItemText primary="Stream" />
+                            </ListItem>
+                            <ListItem button component= {Link} to={"/" + classId + "/structuralGrade"}>
+                                <ListItemText primary="Structural Grade" />
+                            </ListItem>
+                        </List>
+                    }
                     <Grid item >
                         <Box display={"flex"} alignItems="center">
                             <TextField

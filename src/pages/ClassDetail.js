@@ -1,4 +1,4 @@
-import React , {useState , useEffect} from 'react'
+import React , {useState , useEffect, Fragment} from 'react'
 import Header from '../components/Header';
 import AddClassForm from '../components/AddClassForm';
 import ManageProfileForm from '../components/ManageProfileForm';
@@ -10,6 +10,8 @@ import { useHistory, useParams } from 'react-router-dom'
 import axios from 'axios'
 import api from '../uri';
 import ShowListTS from '../components/ShowListTS';
+import Grid from '@mui/material/Grid';
+
 
 const ClassDetail= ()=>{
     const { id } = useParams();
@@ -66,6 +68,7 @@ const ClassDetail= ()=>{
     });;
     }
 
+
     return(
         <div className="App">
             {isPopup && 
@@ -77,7 +80,8 @@ const ClassDetail= ()=>{
                     <ManageProfileForm onSubmit={onSubmitProfileForm}></ManageProfileForm>
                 </PopUp>}
             {cls && 
-                <Header className={"[CLC]PTUDWNC - 18KTPM1"} 
+                <Header classId= {cls._id}
+                    className={cls.className} 
                     onManageProfile = {() => {setisPopupProfile(true)}}
                     onAddClassHandle={() => {setisPopup(true)}}>
                 </Header>}
