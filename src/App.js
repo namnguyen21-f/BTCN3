@@ -9,6 +9,7 @@ import api from './uri';
 import ClassDetail from './pages/ClassDetail';
 import  { Redirect } from 'react-router-dom'
 import { useHistory, useParams } from 'react-router-dom'
+import StructuralGrade from './pages/StructuralGrade';
 
 function DecodeLink(){
 
@@ -88,6 +89,7 @@ function App() {
        
         <Route path="/class/:classId/invite/:id" component={DecodeLink}/>
         <Route path="/class/:classId/inviteUrl" component={DecodeUrlLink}/>
+        <Route path="/:id/structuralGrade" component={StructuralGrade}/>
       </div>
     </Router>
   );
