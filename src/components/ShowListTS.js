@@ -4,13 +4,14 @@ import { useState } from "react";
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import {Button} from '@mui/material';
+import api from "../uri";
 
 
 const ShowListTS= ({classId})=>{
     const [list, setList]= useState(null);
     const handleSubmit= event=>{
         event.preventDefault();
-        axios.post("https://midtermproject160220.herokuapp.com/api/" + `class/${classId}/getClassAte`, {} , 
+        axios.post(api + `class/${classId}/getClassAte`, {} , 
             {
                 headers: {
                     'Content-Type': 'application/json',

@@ -9,13 +9,13 @@ import api from './uri';
 import ClassDetail from './pages/ClassDetail';
 import  { Redirect } from 'react-router-dom'
 import { useHistory, useParams } from 'react-router-dom'
-import StructuralGrade from './pages/StructuralGrade';
+import StructuralPage from './pages/StructuralPage';
 
 function DecodeLink(){
 
   const { id , classId } = useParams();
   useEffect(() => {
-    axios.get("https://midtermproject160220.herokuapp.com/api/" +  `class/${classId}/invite/${id}` , {}
+    axios.get(api +  `class/${classId}/invite/${id}` , {}
     )
     .then(response => {
       
@@ -29,7 +29,7 @@ function DecodeLink(){
 function DecodeUrlLink(){
   const { classId } = useParams();
   useEffect(() => {
-    axios.get("https://midtermproject160220.herokuapp.com/api/" +  `class/${classId}/inviteUrl` ,
+    axios.get(api +  `class/${classId}/inviteUrl` ,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -89,7 +89,7 @@ function App() {
        
         <Route path="/class/:classId/invite/:id" component={DecodeLink}/>
         <Route path="/class/:classId/inviteUrl" component={DecodeUrlLink}/>
-        <Route path="/:id/structuralGrade" component={StructuralGrade}/>
+        <Route exact path="/:id/structuralPage" component={StructuralPage}/>
       </div>
     </Router>
   );

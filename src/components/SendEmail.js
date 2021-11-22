@@ -14,7 +14,7 @@ const SendEmail= ({classId})=>{
     const handleSubmit= event=>{
         event.preventDefault();
     
-        axios.post("https://midtermproject160220.herokuapp.com/api/" + `class/${classId}/invite`
+        axios.post(api + `class/${classId}/invite`
             , {email: emailTo} ,
             {
                 headers: {
@@ -31,7 +31,7 @@ const SendEmail= ({classId})=>{
     const handleSubmitLink = event=>{
         event.preventDefault();
     
-        axios.post("https://midtermproject160220.herokuapp.com/api/" + `class/${classId}/inviteUrl`
+        axios.post(api + `class/${classId}/inviteUrl`
             , {} ,
             {
                 headers: {
