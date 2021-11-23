@@ -26,10 +26,8 @@ const StructuralPage= ()=>{
     useEffect(() => {
         axios.get(api+ `class/${id}/classDetail`)
         .then(response=>{
-            console.log(response.data);
             let cls= response.data;
             setCls(cls);
-          
         });
         
     }, [])
@@ -74,7 +72,7 @@ const StructuralPage= ()=>{
     }
 
     const addGradeForm= (data)=>{
-        axios.post(api +  'grade/new' , {gradeName : data.gradeName, grade: data.grade} ,
+        axios.post(api +  'grade/new' , {gradeName : data.gradeName, grade: data.grade, classId: cls._id} ,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -82,6 +80,7 @@ const StructuralPage= ()=>{
           },
         })
         .then(response => {
+          console.log(response.data);
           setNewGrade(false);
         }).catch(err => {
           if (err.response.data.message === "Student does not have permisson"){
@@ -105,22 +104,23 @@ const StructuralPage= ()=>{
                     <ManageProfileForm onSubmit={onSubmitProfileForm}></ManageProfileForm>
                 </PopUp>}
             { cls &&
-                <Header classId= {cls.id}
+                <Header classId= {cls._id}
                     className={cls.className} 
                     onManageProfile = {() => {setisPopupProfile(true)}}
                     onAddClassHandle={() => {setisPopup(true)}}>
                 </Header>}
-
-            {cls &&
-                <Tooltip title="Add Component Grade">
-                    <IconButton onClick={setNewGrade(true)}>
-                        <AddIcon></AddIcon>
-                    </IconButton>
-                </Tooltip>
-            }
-            {newGrade &&
-                <AddGradeForm onSubmit= {addGradeForm}></AddGradeForm>
-            } 
+            <Container fixed> 
+              {cls &&
+                    <Tooltip title="Add Component Grade">
+                      <IconButton onClick={()=>setNewGrade(true)}>
+                          <AddIcon></AddIcon>
+                      </IconButton>
+                    </Tooltip>
+              }
+              {newGrade &&
+                  <AddGradeForm onSubmit= {addGradeForm}></AddGradeForm>
+              } 
+            </Container>
             
         </div>
         

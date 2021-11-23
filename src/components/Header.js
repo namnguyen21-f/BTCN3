@@ -75,7 +75,7 @@ export default function Header({className , onAddClassHandle, onManageProfile, c
                             <ListItem button component= {Link} to={"/" + classId + "/classDetail"}>
                                 <ListItemText primary="Stream" />
                             </ListItem>
-                            <ListItem button component= {Link} to={"/" + classId + "/structuralGrade"}>
+                            <ListItem button component= {Link} to={"/" + classId + "/structuralPage"}>
                                 <ListItemText primary="Structural Grade" />
                             </ListItem>
                         </List>

@@ -11,7 +11,7 @@ export default function AddGradeForm({onSubmit}) {
     const [name, setName] = useState("")
     const [grade, setGrade] = useState("")
 
-    function handleSubmit(event) {
+    function handleSubmit() {
         onSubmit({gradeName: name, grade: grade});
     }
     return (
