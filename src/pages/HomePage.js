@@ -16,6 +16,7 @@ function HomePage() {
   useEffect(() => {
     axios.get(api +  'class/getAll')
     .then(response => {
+      console.log(response);
       setdataClass(response.data.data);
     });
   }, [])

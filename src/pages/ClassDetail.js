@@ -70,7 +70,7 @@ const ClassDetail= ()=>{
 
 
     return(
-        <div className="App">
+        <div className="App"> 
             {isPopup && 
                 <PopUp onSubmit={(data) => {onSubmitClassForm(data)}} onClose={() => {setisPopup(false)}}>
                     <AddClassForm onSubmit={onSubmitClassForm}></AddClassForm> 

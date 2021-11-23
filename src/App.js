@@ -90,7 +90,7 @@ function App() {
         <Route path="/class/:classId/invite/:id" component={DecodeLink}/>
         <Route path="/class/:classId/inviteUrl" component={DecodeUrlLink}/>
         <Route exact path="/:id/structuralPage" component={StructuralPage}/>
-      </div>
+      </div> 
     </Router>
   );
 }

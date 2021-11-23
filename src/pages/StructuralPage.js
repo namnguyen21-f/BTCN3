@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import AddGradeForm from '../components/AddGradeForm';
+import GradeList from '../components/GradeList';
 
 
 
@@ -21,7 +22,26 @@ const StructuralPage= ()=>{
     const [cls , setCls] = useState(null);
     const [isPopup, setisPopup] = useState(false)
     const [isPopupProfile, setisPopupProfile] = useState(false)
-    const [newGrade, setNewGrade] = useState(false);
+    const [newGradeForm, setNewGradeForm] = useState(false);
+    // const [showGrade, setShowGrade]= useState(false);
+    const [listGrade, setListGrade]= useState([]);
+
+    useEffect(()=>{
+      axios.get(api+ `${id}/gradeAll`, {},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('Authorization'),
+        },
+      })
+      .then(response=>{
+        console.log(response);
+        setListGrade(response.data.data);
+      })
+      .catch(err=>{
+        console.log(err);
+      })
+    }, []);
 
     useEffect(() => {
         axios.get(api+ `class/${id}/classDetail`)
@@ -29,8 +49,7 @@ const StructuralPage= ()=>{
             let cls= response.data;
             setCls(cls);
         });
-        
-    }, [])
+    }, []);
 
     function onSubmitClassForm(data) {
     
@@ -81,14 +100,15 @@ const StructuralPage= ()=>{
         })
         .then(response => {
           console.log(response.data);
-          setNewGrade(false);
+          setNewGradeForm(false);
+          // setShowGrade(true);
         }).catch(err => {
           if (err.response.data.message === "Student does not have permisson"){
             alert("Student does not have permisson") 
           }else {
             alert("Something wrong") 
           }
-          setNewGrade(false);
+          setNewGradeForm(false);
         });;
 
     }
@@ -112,14 +132,18 @@ const StructuralPage= ()=>{
             <Container fixed> 
               {cls &&
                     <Tooltip title="Add Component Grade">
-                      <IconButton onClick={()=>setNewGrade(true)}>
+                      <IconButton onClick={()=>setNewGradeForm(true)}>
                           <AddIcon></AddIcon>
                       </IconButton>
                     </Tooltip>
               }
-              {newGrade &&
+              {newGradeForm &&
                   <AddGradeForm onSubmit= {addGradeForm}></AddGradeForm>
               } 
+              {/* {showGrade &&
+                <GradeList title = "Grade of Course" list = {listGrade}></GradeList>
+              } */}
+              <GradeList title = "Grade of Course" list = {listGrade}></GradeList>
             </Container>
             
         </div>
