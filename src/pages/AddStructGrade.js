@@ -20,7 +20,8 @@ const AddStructGrade= ()=>{
     const { id } = useParams();
     const [cls , setCls] = useState(null);
     const [isPopup, setisPopup] = useState(false)
-    const [isPopupProfile, setisPopupProfile] = useState(false)
+    const [isPopupProfile, setisPopupProfile] = useState(false);
+    const [title, setTitle]= useState("");
     const [listGrade, setListGrade]= useState([{
         gradeText: "",
         grade: ""
@@ -144,7 +145,7 @@ const AddStructGrade= ()=>{
       }
   
     const saveForm= ()=>{
-        axios.post(api+ `class/${id}/newAssignment`, {fieldArray: listGrade, name: cls.className},
+        axios.post(api+ `class/${id}/newAssignment`, {fieldArray: listGrade, name: title},
           {
             headers: {
               'Content-Type': 'application/json',
@@ -185,7 +186,7 @@ const AddStructGrade= ()=>{
                 <div className="section">
                   <div className="title_section">
                     <div className="form_top">
-                      <input type="text" className="form_top_name" style={{color: "black"}} placeholder="Untitled Document"></input>
+                      <input type="text" className="form_top_name" style={{color: "black"}} placeholder="Untitled Document" onChange={(e)=>{setTitle(e.target.value)}}></input>
                     </div>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="droppable">
