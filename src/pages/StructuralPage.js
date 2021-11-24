@@ -143,7 +143,7 @@ const StructuralPage= ()=>{
               {/* {showGrade &&
                 <GradeList title = "Grade of Course" list = {listGrade}></GradeList>
               } */}
-              <GradeList title = "Grade of Course" list = {listGrade}></GradeList>
+              {cls && <GradeList title = "Assignment List" assList={cls.assignmentList}></GradeList>}
             </Container>
             
         </div>

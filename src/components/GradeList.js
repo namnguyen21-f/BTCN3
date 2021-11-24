@@ -6,6 +6,14 @@ import { makeStyles } from '@mui/styles';
 import ListSubheader from '@mui/material/ListSubheader';
 import Typography from '@mui/material/Typography';
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
 const useStyles = makeStyles({
     root: {
       padding: "1rem 0",
@@ -23,11 +31,14 @@ const useStyles = makeStyles({
         padding: "1rem !important",
         marginTop: "1.25rem",
         backgroundColor: "rbga(0 ,0 ,0 ,.6) !important",
+        "& *":{
+            fontSize: "99%"
+        }
     }
   });
 
 
-export default function GradeItem({list, title}){
+export default function Assignment({assList, title}){
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -41,16 +52,39 @@ export default function GradeItem({list, title}){
                     </ListSubheader>
                   }
                 >
-                {list.map((ele,idx) => {
+                {assList.map((ele,idx) => {
                     return (
-                            <ListItem className={classes.listItem} style={{alignItems: "unset"}}>
-                                    <ListItemText 
-                                        primary={ele.nameItem} 
-                                        style={{marginTop: 0}}/>
-                                    <Typography variant="body2"  color="black">
-                                        Grade: {ele.gradeItem}
-                                    </Typography>
-                            </ListItem>
+                        <ListItem className={classes.listItem} style={{alignItems: "unset"}}>
+                            <ListItemText 
+                                primary={"Name: "+ ele.name} 
+                                style={{marginTop: 0}}/>
+                            <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Index</TableCell>
+                                        <TableCell align="right">Name</TableCell>
+                                        <TableCell align="right">Grade</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {ele.fieldArray.map((row , idx) => (
+                                        <TableRow
+                                        key={row.name}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row">
+                                                {idx}
+                                            </TableCell>
+                                            <TableCell align="right">{row.name}</TableCell>
+                                            <TableCell align="right">{row.grade}</TableCell>
+                                        
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                            </TableContainer>
+                        </ListItem>
                     )
                 })}
                 

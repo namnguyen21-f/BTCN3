@@ -74,8 +74,8 @@ export default function Header({className , onAddClassHandle, onManageProfile, c
                                     <Link to={"/" + classId + "/classDetail"} style={{margin: "0 1rem"}}>
                                         Stream
                                     </Link>
-                                    <Link to={"/" + classId + "/structuralPage"}>
-                                        Structural Grade
+                                    <Link to={"/" + classId + "/assignment"}>
+                                        Assignment
                                     </Link>
                                 </List>
                         
