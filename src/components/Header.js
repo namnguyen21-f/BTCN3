@@ -125,15 +125,7 @@ export default function Header({className , onAddClassHandle, onManageProfile, c
                     </Grid>
                 </Grid>
             </Box>
-            {flag && 
-                    <Tabs className={classes.tabs}
-                    textColor="primary"
-                    // indicateColor= "primary"
-                    centered>
-                        <Tab label="Stream" className={classes.tab} button component= {Link} to={"/" + classId + "/classDetail"}></Tab>
-                        <Tab label="Structural Grade" className={classes.tab} button component= {Link} to={"/" + classId + "/structuralPage"}></Tab>
-                    </Tabs>
-            }
+            
             {isOpen && <List sx={style} component="nav" aria-label="mailbox folders">
                 <ListItem button>
                     <ListItemText onClick={() => {onManageProfile()}} primary="Profile" />

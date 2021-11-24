@@ -10,7 +10,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import axios from 'axios'
 import api from '../uri';
 import ShowListTS from '../components/ShowListTS';
-import Grid from '@mui/material/Grid';
+
 
 
 const ClassDetail= ()=>{
@@ -72,11 +72,11 @@ const ClassDetail= ()=>{
     return(
         <div className="App"> 
             {isPopup && 
-                <PopUp onSubmit={(data) => {onSubmitClassForm(data)}} onClose={() => {setisPopup(false)}}>
+                <PopUp onClose={() => {setisPopup(false)}}>
                     <AddClassForm onSubmit={onSubmitClassForm}></AddClassForm> 
                 </PopUp>}
             {isPopupProfile && 
-                <PopUp onSubmit={(data) => {onSubmitClassForm(data)}} onClose={() => {setisPopupProfile(false)}}>
+                <PopUp onClose={() => {setisPopupProfile(false)}}>
                     <ManageProfileForm onSubmit={onSubmitProfileForm}></ManageProfileForm>
                 </PopUp>}
             {cls && 

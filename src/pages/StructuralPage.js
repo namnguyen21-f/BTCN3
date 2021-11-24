@@ -27,6 +27,7 @@ const StructuralPage= ()=>{
     const { id } = useParams();
     const [cls , setCls] = useState(null);
     const [isPopup, setisPopup] = useState(false)
+    const [isAddass, setisAddass] = useState(true)
     const [isPopupProfile, setisPopupProfile] = useState(false)
     const [listGrade, setListGrade]= useState([{
       gradeText: "",
@@ -147,31 +148,28 @@ const StructuralPage= ()=>{
                     onManageProfile = {() => {setisPopupProfile(true)}}
                     onAddClassHandle={() => {setisPopup(true)}}>
                 </Header>}
-              {cls &&
-                    <Tooltip title="Add Component Grade">
-                      <IconButton onClick={()=>setNewGradeForm(true)}>
-                          <AddIcon></AddIcon>
-                      </IconButton>
-                    </Tooltip>
-              }
-              {newGradeForm &&
-                  <AddGradeForm onSubmit= {addGradeForm}></AddGradeForm>
-              } 
+              
               {/* {showGrade &&
                 <GradeList title = "Grade of Course" list = {listGrade}></GradeList>
               } */}
-              {cls && <GradeList title = "Assignment List" assList={cls.assignmentList}></GradeList>}
+              {cls && 
+                <Container fixed>
+                  <GradeList title = "Assignment List" assList={cls.assignmentList}></GradeList>
+                </Container>
+              }
+
               <Container fixed className= "form"> 
-              <div className="section">
-                <div className="title_section">
-                  <div className="form_top">
-                    <input type="text" className="form_top_name" style={{color: "black"}} placeholder="Untitled Document"></input>
+                <div className="section">
+                  <div className="title_section">
+                    <div className="form_top">
+                      <input type="text" className="form_top_name" style={{color: "black"}} placeholder="Untitled Document"></input>
+                    </div>
                   </div>
                 </div>
-              </div>
-              {gradeUI()}
-              <Button variant="contained" color="primary" onClick={saveForm} style={{fontSize:"14px"}}>Save</Button>
-            </Container>
+                {gradeUI()}
+                <Button variant="contained" color="primary" onClick={saveForm} style={{fontSize:"14px"}}>Save</Button>
+              </Container>
+              
             
         </div>
         
