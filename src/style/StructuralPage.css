@@ -1,0 +1,95 @@
+.form{
+    background-color: #f4f4f9;
+    height: 100%;
+    padding-bottom: 30px;
+    padding-top: 15px;
+}
+
+.section{
+    margin: auto;
+    width: 80%;
+}
+
+.form_top{
+    background-color: white;
+    border-top: 8px solid rgb(103, 58, 183);
+    border-radius: 8px;
+    padding: 30px 25px;
+    text-transform: capitalize;
+}
+
+.form_top_name{
+    box-sizing: border-box;
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 40px;
+    line-height: 135%;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #f4f4f9;
+    color: black;
+    height: 35px;
+}
+
+.gradeBox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.addGrade{
+    background-color: white;
+    border-radius: 8px;
+    padding: 25px 22px;
+    text-transform: capitalize;
+    display: flex;
+    flex-direction: column;
+    padding-top: 0px;
+    width: 80%;
+    margin-top: 10px;
+    margin-left: 2%;
+}
+
+.addGradeTop{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.gradeText{
+    box-sizing: border-box;
+    /* margin-top: 10px; */
+    font-family: 'Google Sans', Roboto, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    flex: 1;
+    line-height: 40px;
+    width: 40%;
+    border: none;
+    outline: none;
+    color: black;
+    height: 40px;
+    margin-right: 10px;
+    padding: 10px;
+}
+
+.gradeText:focus{
+    border-bottom: 1px solid rgb(103, 58, 183);
+    background-color: #f4f4f9;
+}
+
+.grade{
+    height: 40px;
+    width: 230px;
+    border: 0 5px solid;
+    padding: 5px 15px;
+    color: black;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: 1 5px solid #f4f4f9;
+    border-radius: 3px;
+    background: transparent;
+}
