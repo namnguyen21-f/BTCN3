@@ -50,6 +50,7 @@ export default function Header({className , onAddClassHandle, onManageProfile, c
     const [isOpen , setIsOpen] = useState(false);
     let clsName = "[CLC]PTUDWNC - 18KTPM1";
     let flag= false;
+
     if(className){
         flag= true;
         clsName= className;
@@ -68,18 +69,20 @@ export default function Header({className , onAddClassHandle, onManageProfile, c
                             <Typography ml={2} variant="h5" component="div">
                                 {clsName}
                             </Typography>
+                            {flag && 
+                                <List style={{display: "flex", marginLeft: "1rem"}}>
+                                    <Link to={"/" + classId + "/classDetail"} style={{margin: "0 1rem"}}>
+                                        Stream
+                                    </Link>
+                                    <Link to={"/" + classId + "/structuralPage"}>
+                                        Structural Grade
+                                    </Link>
+                                </List>
+                        
+                            }
                         </Box>
                     </Grid>
-                    {flag && 
-                        <List>
-                            <ListItem button component= {Link} to={"/" + classId + "/classDetail"}>
-                                <ListItemText primary="Stream" />
-                            </ListItem>
-                            <ListItem button component= {Link} to={"/" + classId + "/structuralPage"}>
-                                <ListItemText primary="Structural Grade" />
-                            </ListItem>
-                        </List>
-                    }
+                    
                     <Grid item >
                         <Box display={"flex"} alignItems="center">
                             <TextField
