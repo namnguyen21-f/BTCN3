@@ -94,6 +94,9 @@ export default function Header({className , onAddClassHandle, onManageProfile, c
                                     <Link to={"/" + classId + "/assignment"}>
                                         Assignment
                                     </Link>
+                                    <Link to={"/" + classId + "/structGrade"} style={{margin: "0 1rem"}}>
+                                        Create Struct Grade
+                                    </Link>
                                 </List>
                         
                             }

@@ -10,6 +10,7 @@ import ClassDetail from './pages/ClassDetail';
 import  { Redirect } from 'react-router-dom'
 import { useHistory, useParams } from 'react-router-dom'
 import StructuralPage from './pages/StructuralPage';
+import AddStructGrade from './pages/AddStructGrade';
 
 function DecodeLink(){
 
@@ -90,6 +91,7 @@ function App() {
         <Route path="/class/:classId/invite/:id" component={DecodeLink}/>
         <Route path="/class/:classId/inviteUrl" component={DecodeUrlLink}/>
         <Route exact path="/:id/assignment" component={StructuralPage}/>
+        <Route exact path="/:id/structGrade" component={AddStructGrade}/>
       </div> 
     </Router>
   );
