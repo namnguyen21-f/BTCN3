@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { makeStyles } from '@mui/styles';
 import ListSubheader from '@mui/material/ListSubheader';
 import Typography from '@mui/material/Typography';
-
+import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,6 +13,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+
+import axios from 'axios'
+import api from '../uri';
 
 const useStyles = makeStyles({
     root: {
@@ -38,8 +42,9 @@ const useStyles = makeStyles({
   });
 
 
-export default function Assignment({assList, title}){
+export default function Assignment({assList, title, cls , onRemove}){
     const classes = useStyles();
+    
     return (
         <div className={classes.root}>
            <List 
@@ -55,9 +60,17 @@ export default function Assignment({assList, title}){
                 {assList.map((ele,idx) => {
                     return (
                         <ListItem className={classes.listItem} style={{alignItems: "unset"}}>
-                            <ListItemText 
+                            <Box>
+                                <ListItemText 
                                 primary={"Name: "+ ele.name} 
                                 style={{marginTop: 0}}/>
+                                <Button style={{width: "100px" , marginBottom: "4px"}} variant="contained" href={"/" + cls._id + "/update"}>
+                                    Update
+                                </Button>
+                                <Button style={{width: "100px"}} variant="contained" onClick={() => {onRemove(ele._id)}}>
+                                    Remove
+                                </Button>
+                            </Box>
                             <TableContainer component={Paper}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>

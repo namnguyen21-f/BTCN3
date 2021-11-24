@@ -18,7 +18,7 @@ const StructuralPage= ()=>{
     const { id } = useParams();
     const [cls , setCls] = useState(null);
     const [isPopup, setisPopup] = useState(false)
-    const [isAddass, setisAddass] = useState(true)
+    const [assList, setassList] = useState(true)
     const [isPopupProfile, setisPopupProfile] = useState(false)
     // const [title, setTitle]= useState("");
 
@@ -26,6 +26,7 @@ const StructuralPage= ()=>{
         axios.get(api+ `class/${id}/classDetail`)
         .then(response=>{
             let cls= response.data;
+            setassList(cls.assignmentList);
             setCls(cls);
         });
     }, []);
@@ -49,6 +50,24 @@ const StructuralPage= ()=>{
           }
           setisPopup(false);
         });;
+    }
+
+    function onRemoveAssignment(id){
+      console.log(cls)
+      axios.post(api + "class/" +  cls._id + "/" + id + '/remove' , {} ,
+        {
+          headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('Authorization'),
+          },
+        })
+        .then(response => {
+          let tmp = cls;
+          tmp.assignmentList = tmp.assignmentList.filter(data => data._id != id);
+          setassList(tmp.assignmentList);
+          setCls(tmp);
+        })
+        
     }
     
     function onSubmitProfileForm(data) {
@@ -89,7 +108,7 @@ const StructuralPage= ()=>{
               
               {cls && 
                 <Container fixed>
-                  <GradeList title = "Assignment List" assList={cls.assignmentList}></GradeList>
+                  <GradeList title ="Assignment List" onRemove={onRemoveAssignment} cls={cls} assList={assList}></GradeList>
                 </Container>
               }
               

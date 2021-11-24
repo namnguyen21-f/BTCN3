@@ -30,7 +30,6 @@ const ClassDetail= ()=>{
     }, [])
 
     function onSubmitClassForm(data) {
-    
         axios.post(api +  'class/new' , {teacher : data.teacher, className: data.className} ,
         {
           headers: {
@@ -51,21 +50,21 @@ const ClassDetail= ()=>{
     }
     
     function onSubmitProfileForm(data) {
-    axios.post(api +  'changeProfile' , data ,
-    {
-        headers: {
-        'Content-Type': 'application/json',
-        'Authorization': localStorage.getItem('Authorization'),
-        },
-    })
-    .then(response => {
-        setisPopupProfile(false);
-    }).catch(err => {
-        if (err.response.data.message === "User is not valid"){
-        alert("User is not valid") 
-        }
-        setisPopupProfile(false);
-    });;
+        axios.post(api +  'changeProfile' , data ,
+        {
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('Authorization'),
+            },
+        })
+        .then(response => {
+            setisPopupProfile(false);
+        }).catch(err => {
+            if (err.response.data.message === "User is not valid"){
+            alert("User is not valid") 
+            }
+            setisPopupProfile(false);
+        });;
     }
 
 
