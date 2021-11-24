@@ -17,6 +17,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import { Link } from "react-router-dom";
+import { Paper } from '@mui/material';
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab';
 
 
 import Tooltip from '@mui/material/Tooltip';
@@ -31,6 +34,20 @@ const useStyles = makeStyles({
         "& input" : {
             padding: "0.5rem",
         }
+    },
+    paper: {
+        flexGrow: 1
+    },
+    tab: {
+        fontSize: 12,
+        color: "#5f6368",
+        textTransform: "capitalize",
+        height: 10,
+        fontWeight: "600",
+        fontFamily: "Google sans,Roboto,Arial,sans-serif"
+    },
+    tabs: {
+        height: 10
     }
   });
 
@@ -108,6 +125,15 @@ export default function Header({className , onAddClassHandle, onManageProfile, c
                     </Grid>
                 </Grid>
             </Box>
+            {flag && 
+                    <Tabs className={classes.tabs}
+                    textColor="primary"
+                    // indicateColor= "primary"
+                    centered>
+                        <Tab label="Stream" className={classes.tab} button component= {Link} to={"/" + classId + "/classDetail"}></Tab>
+                        <Tab label="Structural Grade" className={classes.tab} button component= {Link} to={"/" + classId + "/structuralPage"}></Tab>
+                    </Tabs>
+            }
             {isOpen && <List sx={style} component="nav" aria-label="mailbox folders">
                 <ListItem button>
                     <ListItemText onClick={() => {onManageProfile()}} primary="Profile" />
