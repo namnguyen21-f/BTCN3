@@ -43,6 +43,7 @@ function SignupPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [userName, setuserName] = useState("")
+  const [studentId, setstudentId] = useState("")
   const [phone, setPhone] = useState("")
   const [role, setRole] = useState("Student")
 
@@ -62,6 +63,7 @@ function SignupPage() {
       userName,
       phone,
       role: role.toLowerCase(),
+      studentId
     }
     axios.post(api +  'signup' , data)
     .then(response => {
@@ -154,6 +156,18 @@ function SignupPage() {
                 id="phone"
                 onChange={(e) => {setPhone(e.target.value)}}
                 value={phone}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                fullWidth
+                name="studentId"
+                label="StudentId"
+                type="string"
+                id="studentId"
+                onChange={(e) => {setstudentId(e.target.value)}}
+                value={studentId}
               />
             </Grid>
             <Grid item xs={12}>

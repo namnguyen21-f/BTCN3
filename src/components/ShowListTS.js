@@ -11,7 +11,7 @@ const ShowListTS= ({classId})=>{
     const [list, setList]= useState(null);
     const handleSubmit= event=>{
         event.preventDefault();
-        axios.post(api + `class/${classId}/getClassAte`, {} , 
+        axios.get(api + `class/${classId}/getClassAte`,  
             {
                 headers: {
                     'Content-Type': 'application/json',

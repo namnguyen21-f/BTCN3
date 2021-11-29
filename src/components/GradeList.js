@@ -44,7 +44,6 @@ const useStyles = makeStyles({
 
 export default function Assignment({assList, title, cls , onRemove}){
     const classes = useStyles();
-    
     return (
         <div className={classes.root}>
            <List 
@@ -60,43 +59,31 @@ export default function Assignment({assList, title, cls , onRemove}){
                 {assList.map((ele,idx) => {
                     return (
                         <ListItem className={classes.listItem} style={{alignItems: "unset"}}>
-                            <Box>
-                                <ListItemText 
-                                primary={"Name: "+ ele.name} 
-                                style={{marginTop: 0}}/>
-                                <Button style={{width: "100px" , marginBottom: "4px"}} variant="contained" href={"/" + cls._id + "/update"}>
-                                    Update
-                                </Button>
-                                <Button style={{width: "100px"}} variant="contained" onClick={() => {onRemove(ele._id)}}>
-                                    Remove
-                                </Button>
+                            <Box display="flex" justifyContent="space-between" style={{width: "100%"}}>
+                                <Box component="div" >
+                                    <Typography variant="h6" component="div" color="black">
+                                        Name: {ele.name}
+                                    </Typography>
+                                    
+                                    <Typography variant="h6" component="div" color="black">
+                                        Grade: {ele.grade}
+                                    </Typography>
+                                    <Typography variant="body1" component="div" color="gray">
+                                        Created At: {new Date(ele.createdAt).getDate() + " " + new Date(ele.createdAt).getMonth() + " " + new Date(ele.createdAt).getFullYear()}
+                                    </Typography>
+                                </Box>
+                                <Box component="div" style={{width: "100px"}}>
+                                    <Button component="div" style={{width: "100px" , marginBottom: "4px"}} variant="contained" href={"/" + cls._id + "/update"}>
+                                        Update
+                                    </Button>
+                                    <Button component="div" style={{width: "100px"}} variant="contained" onClick={() => {onRemove(ele._id)}}>
+                                        Remove
+                                    </Button>
+                                </Box>
+                               
+                                
                             </Box>
-                            <TableContainer component={Paper}>
-                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Index</TableCell>
-                                        <TableCell align="right">Name</TableCell>
-                                        <TableCell align="right">Grade</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {ele.fieldArray.map((row , idx) => (
-                                        <TableRow
-                                        key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell component="th" scope="row">
-                                                {idx}
-                                            </TableCell>
-                                            <TableCell align="right">{row.name}</TableCell>
-                                            <TableCell align="right">{row.grade}</TableCell>
-                                        
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                            </TableContainer>
+
                         </ListItem>
                     )
                 })}
