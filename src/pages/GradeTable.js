@@ -1,12 +1,44 @@
 import axios from "axios";
 import api from '../uri';
 import { useParams } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 
 const GradeTable= ()=>{
     const { id } = useParams();
     const [file, setFile]= useState();
-    const [filename, setFilename]= useState(false);
+    const [cls , setCls] = useState(null);
+    const [listStudent, setListStudent]= useState([]);
+    const [listStudentSigned, setListStudentSigned]= useState(null);
+    const [checkStudentSigned, setCheckStudentSigned]= useState(false);
+
+    useEffect(() => {
+        axios.get(api+ `class/${id}/classDetail`)
+        .then(response=>{
+            let cls= response.data;
+            setCls(cls);
+            setListStudent(cls.studentList);
+        });
+
+        axios.get(api + `class/${id}/getClassAte`,  
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('Authorization'),
+                },
+            })
+        .then(response=>{
+            setListStudentSigned(response.data.data.s_arr);
+        })
+        .catch(err=> console.log("err", err.response.data.message));
+        
+    }, [])
+
     const downloadStructStudent= ()=>{
         axios.get(api +  'class/sl/template', 
         {
@@ -23,9 +55,7 @@ const GradeTable= ()=>{
     }
 
     const onChange= (e)=>{
-        setFile(e.target.files[0]);
-        setFilename(true);
-        
+        setFile(e.target.files[0]);        
     }
 
     const uploadStudentList= ()=>{
@@ -51,14 +81,53 @@ const GradeTable= ()=>{
         }
     }
 
+    const checkMapStudent= (studentId)=>{
+        listStudentSigned.map(student=>{
+            if(studentId == student.studentId){
+                setCheckStudentSigned(true);
+            }
+        });
+        if(checkStudentSigned){
+            setCheckStudentSigned(false);
+            return <TableCell><a href="#">{studentId}</a></TableCell>;
+        }
+        return <TableCell>{studentId}</TableCell>
+    }
+
     return (
         <div>
             <button onClick={downloadStructStudent}>Download Structural Grade</button>
-            {/* <form onSubmit={uploadStudentList}> */}
-                <input type="file" onChange={onChange}/>
-                {/* <input type="submit"/> */}
-                <button onClick={uploadStudentList}>Submit</button>
-            {/* </form> */}
+            <input type="file" onChange={onChange}/>
+            <button onClick={uploadStudentList}>Submit</button>
+            {cls && 
+                <Paper>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Student Id</TableCell>
+                                {cls.assignmentList.map(ass=>(
+                                    <TableCell id={ass._id}>{ass.name}</TableCell>
+                                ))}
+                                <TableCell>Total</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {listStudent.map(student=>(
+                                <TableRow id={student.studentId}>
+                                    { listStudentSigned &&
+                                        checkMapStudent(student.studentId)
+                                    }
+                                    {/* <TableCell>{student.studentId}</TableCell> */}
+                                    {cls.assignmentList.map(ass=>(
+                                        <TableCell id={ass._id}><input type="number"/></TableCell>
+                                    ))}
+                                    <TableCell></TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </Paper>
+            }
         </div>
     )
 }
