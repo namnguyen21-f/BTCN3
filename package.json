@@ -25,7 +25,8 @@
     "react-giphy-picker": "^1.1.1",
     "react-google-login": "^5.2.2",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3"
+    "react-scripts": "4.0.3",
+    "read-excel-file": "^5.2.25"
   },
   "scripts": {
     "start": "react-scripts start",

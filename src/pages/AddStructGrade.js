@@ -132,7 +132,7 @@ const AddStructGrade= ()=>{
                                     <input type="number" className="grade" placeholder="Grade" value={grade.grade} onChange={e=>{changeGrade(e.target.value, i)}}></input>
                                 </div>
                                 </AccordionDetails>
-                                <AddCircleOutlineIcon onClick={addMoreGrade} className="edit"/>
+                                {/* <AddCircleOutlineIcon onClick={addMoreGrade} className="edit"/> */}
                             </div>
 
 
@@ -153,8 +153,8 @@ const AddStructGrade= ()=>{
             },
           })
           .then(response=>{
-            console.log(response);
-            alert("Successful");
+            // alert("Successful");
+            addMoreGrade();
           })
           .catch(err => {
             if (err.response.data.message === "Student does not have permisson"){
@@ -202,9 +202,8 @@ const AddStructGrade= ()=>{
                             )} 
                         </Droppable>
                     </DragDropContext>
-                    {/* {gradeUI()} */}
-                    <Button variant="contained" color="primary" onClick={saveForm} style={{fontSize:"14px", marginTop: "10px"}}>Save</Button>
-                    
+                    <Button variant="contained" color="primary" onClick={saveForm} style={{fontSize:"14px", marginTop: "10px"}}>Add</Button>
+                    {/* <AddCircleOutlineIcon onClick={saveForm} className="edit"/>  */}
                   </div>
                 </div>
               </Container>
