@@ -8,6 +8,16 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { saveAs } from 'file-saver';
+function startDownload(file, fileName) {
+    const url = window.URL.createObjectURL(new Blob([file]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+}
 
 const GradeTable= ()=>{
     const { id } = useParams();
@@ -42,13 +52,19 @@ const GradeTable= ()=>{
     const downloadStructStudent= ()=>{
         axios.get(api +  'class/sl/template', 
         {
+            responseType: 'arraybuffer',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem('Authorization'),
             },
         })
         .then(response => {
-            console.log(response);
+            const dirtyFileName = response.headers['content-disposition'];
+            const regex = /filename[^;=\n]*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/;
+            var  fileName = dirtyFileName.match(regex)[3];
+            
+            var blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            saveAs(blob, fileName);
         }).catch(err => {
             alert(err.response.data.message);
         });;
