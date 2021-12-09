@@ -39,7 +39,7 @@ function LoginPage() {
     
   }, [])
 
-  function onSubmitForm(e) {
+  function onSubmitForm(e) {  
     e.preventDefault();
     axios.post(api +  'signin' , {email, password})
     .then(response => {
@@ -51,7 +51,9 @@ function LoginPage() {
       
       if (err.response.data.message === "User is not registered"){
         sethpem("Email is invalid");
-      }else {
+      } if (err.response.data.message === "Your account has been locked"){
+        alert("Your account has been locked");
+      } else {
         sethppa(err.response.data.message);
       }
       

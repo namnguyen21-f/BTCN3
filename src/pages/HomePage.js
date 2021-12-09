@@ -7,18 +7,49 @@ import axios from 'axios'
 import api from '../uri';
 import AddClassForm from '../components/AddClassForm';
 import ManageProfileForm from '../components/ManageProfileForm';
+import AccountManage from '../components/AccountManage';
+import ClassManage from '../components/ClassManage';
+import { makeStyles } from '@mui/styles';
 
-function HomePage() {
+const useStyles = makeStyles({
+  root: {
+    padding: ".5rem 2rem",
+    borderBottom: "1px solid black",
+    position: "relative",
+  },
+  mainSection: {
+    paddingTop: "2rem",
+  },
+  pt2: {
+    paddingTop: "2rem",
+  },
+});
+
+
+function HomePage({user}) {
+  const classes = useStyles();
   const [isPopup, setisPopup] = useState(false)
   const [isPopupProfile, setisPopupProfile] = useState(false)
   const [dataClass , setdataClass] = useState([])
+  const [dataAccount , setdataAccount] = useState([])
 
   useEffect(() => {
+    if (user.role == "admin"){
+      axios.get(api +  'admin/getAllAccount' , {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('Authorization'),
+        },
+      })
+      .then(response => {
+        setdataAccount(response.data.data);
+      }); 
+    }
     axios.get(api +  'class/getAll')
-    .then(response => {
-      console.log(response);
-      setdataClass(response.data.data);
-    });
+      .then(response => {
+        setdataClass(response.data.data);
+      });
+    
   }, [])
 
   function onSubmitClassForm(data) {
@@ -72,10 +103,24 @@ function HomePage() {
         </PopUp>}
       <Header
         onManageProfile = {() => {setisPopupProfile(true)}}
-        onAddClassHandle={() => {setisPopup(true)}}></Header>
-      <Container fixed>
-        <Classroom title="Classroom List" list={dataClass}></Classroom>
-      </Container>
+        onAddClassHandle={() => {setisPopup(true)}}
+        clsName={user.role == "admin" ? "AdminPage" : "HomePage"}
+        ></Header>
+      {user.role != "admin" && 
+        <Container className={classes.mainSection} fixed>
+          <Classroom title="Classroom List" list={dataClass}></Classroom>
+        </Container>
+      }
+      {user.role == "admin" && 
+        <Container className={classes.mainSection} fixed>
+          <div>
+            {dataAccount.length!=0 && <AccountManage accData={dataAccount}></AccountManage>}
+          </div>
+          <div className={classes.pt2}>
+            {dataClass.length !=0 && <ClassManage accData={dataClass}></ClassManage>}
+          </div>
+        </Container>
+      }
     </div>
   );
 }

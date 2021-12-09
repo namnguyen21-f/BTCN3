@@ -62,10 +62,10 @@ const style = {
     boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
 };
 
-export default function Header({className , onAddClassHandle, onManageProfile, classId}){
+export default function Header({className , onAddClassHandle, onManageProfile, classId , clsName}){
     const classes = useStyles();
     const [isOpen , setIsOpen] = useState(false);
-    let clsName = "[CLC]PTUDWNC - 18KTPM1";
+    
     let flag= false;
 
     if(className){
