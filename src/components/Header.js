@@ -11,7 +11,8 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Avatar from '@mui/material/Avatar';
 import { deepOrange, deepPurple } from '@mui/material/colors';
 import { TextField } from '@mui/material';
-
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -20,7 +21,11 @@ import { Link } from "react-router-dom";
 import { Paper } from '@mui/material';
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab';
-
+import Badge from '@mui/material/Badge';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import axios from 'axios'
+import api from '../uri';
+import CardContent from '@mui/material/CardContent';
 
 import Tooltip from '@mui/material/Tooltip';
 const useStyles = makeStyles({
@@ -48,6 +53,19 @@ const useStyles = makeStyles({
     },
     tabs: {
         height: 10
+    },
+    notifi: {
+        position: "relative",
+    },
+    notifiNest: {
+        position: "absolute",
+        background: "#fff",
+        padding: "1rem 0",
+        width: "320px",
+        left: "-190px",
+        top: "40px",
+        zIndex: "2",
+        boxShadow: "0 12px 28px 0 rgba(0,0,0,.2),0 2px 4px 0 rgba(0,0,0,.1),inset 0 0 0 1px rgba(255,255,255,.5)"
     }
   });
 
@@ -62,16 +80,34 @@ const style = {
     boxShadow: "0 3px 10px rgb(0 0 0 / 0.2)",
 };
 
-export default function Header({className , onAddClassHandle, onManageProfile, classId , clsName}){
+export default function Header({className , onAddClassHandle, onManageProfile, 
+    classId , clsName}){
     const classes = useStyles();
     const [isOpen , setIsOpen] = useState(false);
-    
+    const [notifications , setNotifications] = useState([]);
+    const [openNof , setOpenNof] = useState(false);
+
     let flag= false;
 
     if(className){
         flag= true;
         clsName= className;
     }
+
+    useEffect(() => {
+        axios.get(api +  'notififcations' ,
+        {
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('Authorization'),
+            },
+        })
+        .then(response => {
+            setNotifications(response.data.data);
+        }).catch(err => {
+        
+        });;
+    }, [])
 
     return (
         <header className={classes.root}>
@@ -88,16 +124,16 @@ export default function Header({className , onAddClassHandle, onManageProfile, c
                             </Typography>
                             {flag && 
                                 <List style={{display: "flex", marginLeft: "1rem"}}>
-                                    <Link to={"/" + classId + "/classDetail"} style={{margin: "0 1rem"}}>
+                                    <Link to={"/" + classId + "/classDetail"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
                                         Stream
                                     </Link>
-                                    <Link to={"/" + classId + "/assignment"}>
+                                    <Link to={"/" + classId + "/assignment"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
                                         Assignment
                                     </Link>
-                                    <Link to={"/" + classId + "/structGrade"} style={{margin: "0 1rem"}}>
+                                    <Link to={"/" + classId + "/structGrade"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
                                         Create Struct Grade
                                     </Link>
-                                    <Link to={"/" + classId + "/gradeTable"} style={{margin: "0 1rem"}}>
+                                    <Link to={"/" + classId + "/gradeTable"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
                                         Table Grade
                                     </Link>
                                 </List>
@@ -120,13 +156,48 @@ export default function Header({className , onAddClassHandle, onManageProfile, c
                                 }}
                                 className={classes.input}
                             />
+
+                            <div className={classes.notifi}>
+                                <Tooltip title="Notifications">
+                                    <IconButton onClick={() => {setOpenNof(!openNof)}}>
+                                        <Badge badgeContent={notifications.length} color="primary">
+                                            <NotificationsIcon color="action" />
+                                        </Badge>
+                                    </IconButton>
+                                </Tooltip>
+
+                                {openNof && <div className={classes.notifiNest}>
+                                    <Typography ml={2} variant="h5" component="div">
+                                        Notifications
+                                    </Typography>
+                                    {notifications.map((ele) => {
+                                        return <Card style={{boxShadow: "unset"}}>
+                                            <CardHeader
+                                                avatar={
+                                                <Avatar sx={{ bgcolor: deepOrange[500] }} aria-label="recipe">
+                                                    R
+                                                </Avatar>
+                                                }
+                                                title={ele.title}
+                                                subheader="September 14, 2016"
+                                            />
+                                            <CardContent style={{padding: "0 1rem"}}>
+                                                <Typography variant="body2" color="text.secondary">
+                                                    {ele.text}
+
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    })}
+                                </div>}
+                            </div>
                             
-                            <Tooltip title="Add Classroom">
+                            {clsName != "AdminPage" && <Tooltip title="Add Classroom">
                                 <IconButton onClick={() => {onAddClassHandle()}}>
                                     <AddIcon></AddIcon>
                                 </IconButton>
-                            </Tooltip>
-                            <Avatar onClick={() => {setIsOpen(!isOpen)}} sx={{ bgcolor: deepOrange[500] }}>H</Avatar>
+                            </Tooltip>}
+                            <Avatar style={{marginLeft: "1rem"}} onClick={() => {setIsOpen(!isOpen)}} sx={{ bgcolor: deepOrange[500] }}>H</Avatar>
                         </Box>
                     </Grid>
                 </Grid>
@@ -134,11 +205,11 @@ export default function Header({className , onAddClassHandle, onManageProfile, c
             
             {isOpen && <List sx={style} component="nav" aria-label="mailbox folders">
                 <ListItem button>
-                    <ListItemText onClick={() => {onManageProfile()}} primary="Profile" />
+                    <ListItemText onClick={() => {onManageProfile();setIsOpen(!isOpen)}} primary="Profile" />
                 </ListItem>
                 <Divider />
                 <ListItem button >
-                    <ListItemText primary="Class" />
+                    <ListItemText onClick={() => {window.location.href = "/"}} primary="Class" />
                 </ListItem>
                 <Divider/>
                 <ListItem button>

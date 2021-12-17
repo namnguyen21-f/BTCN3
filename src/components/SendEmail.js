@@ -49,16 +49,18 @@ const SendEmail= ({classId})=>{
 
     return (
         <>
-            <Container  component="main">
+            
                 <form onSubmit= {handleSubmit} noValidate>
                     <Grid item xs={12} display="flex" alignItems="center" mt={2}>
-                        <Typography variant="h6" component="h6" mr={2}>
+                        <Typography variant="subtitle1" component="div" mr={2}>
                             Send inviation via email:
                         </Typography>
                         <TextField
                             value={emailTo}
                             onChange={handleChangeEmail}
                             label="Enter email invite"
+                            style={{ fontSize: "16px"}}
+                            size="small"
                         />
                         <Button
                             style={{marginLeft: ".5rem"}}
@@ -71,12 +73,13 @@ const SendEmail= ({classId})=>{
                 </form>
                 <form onSubmit= {handleSubmitLink} noValidate>
                     <Grid item display="flex" alignItems="center" mt={2}>
-                        <Typography variant="h6" component="h6" mr={2}>
+                        <Typography variant="subtitle1" component="div" mr={2}>
                             Generate Class Link :
                         </Typography>
                         <TextField
                             value={link}
-                            
+                            style={{ fontSize: "16px"}}
+                            size="small"
                         />
                         <Button
                             style={{marginLeft: ".5rem"}}
@@ -87,7 +90,7 @@ const SendEmail= ({classId})=>{
                         </Button>
                     </Grid>
                 </form>
-            </Container>
+           
         </>
     )
 }

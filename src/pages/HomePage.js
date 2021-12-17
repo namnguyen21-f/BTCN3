@@ -32,6 +32,7 @@ function HomePage({user}) {
   const [isPopupProfile, setisPopupProfile] = useState(false)
   const [dataClass , setdataClass] = useState([])
   const [dataAccount , setdataAccount] = useState([])
+  
 
   useEffect(() => {
     if (user.role == "admin"){
@@ -104,13 +105,16 @@ function HomePage({user}) {
       <Header
         onManageProfile = {() => {setisPopupProfile(true)}}
         onAddClassHandle={() => {setisPopup(true)}}
+      
         clsName={user.role == "admin" ? "AdminPage" : "HomePage"}
         ></Header>
+
       {user.role != "admin" && 
         <Container className={classes.mainSection} fixed>
           <Classroom title="Classroom List" list={dataClass}></Classroom>
         </Container>
       }
+
       {user.role == "admin" && 
         <Container className={classes.mainSection} fixed>
           <div>

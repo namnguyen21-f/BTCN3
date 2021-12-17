@@ -42,7 +42,7 @@ const useStyles = makeStyles({
   });
 
 
-export default function Assignment({assList, title, cls , onRemove}){
+export default function Assignment({user, assList, title, cls , onRemove}){
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -58,7 +58,7 @@ export default function Assignment({assList, title, cls , onRemove}){
                 >
                 {assList.map((ele,idx) => {
                     return (
-                        <ListItem className={classes.listItem} style={{alignItems: "unset"}}>
+                        <ListItem component="a" href={"/" + cls._id + "/assignment/" + ele._id} className={classes.listItem} style={{alignItems: "unset"}}>
                             <Box display="flex" justifyContent="space-between" style={{width: "100%"}}>
                                 <Box component="div" >
                                     <Typography variant="h6" component="div" color="black">
@@ -72,14 +72,18 @@ export default function Assignment({assList, title, cls , onRemove}){
                                         Created At: {new Date(ele.createdAt).getDate() + " " + new Date(ele.createdAt).getMonth() + " " + new Date(ele.createdAt).getFullYear()}
                                     </Typography>
                                 </Box>
-                                <Box component="div" style={{width: "100px"}}>
-                                    <Button component="div" style={{width: "100px" , marginBottom: "4px"}} variant="contained" href={"/" + cls._id + "/update"}>
+                                {user.role == "teacher" && cls.createdBy == user._id && <Box component="div" style={{width: "100px"}}>
+                                    <Button component="div" style={{width: "100px" , marginBottom: "4px"}} variant="contained"  onClick={(e) => {
+                                            e.preventDefault();
+                                        }}>
                                         Update
                                     </Button>
-                                    <Button component="div" style={{width: "100px"}} variant="contained" onClick={() => {onRemove(ele._id)}}>
+                                    <Button component="div" style={{width: "100px"}} variant="contained" onClick={(e) => {
+                                            e.preventDefault();onRemove(ele._id);
+                                        }}>
                                         Remove
                                     </Button>
-                                </Box>
+                                </Box>}
                                
                                 
                             </Box>

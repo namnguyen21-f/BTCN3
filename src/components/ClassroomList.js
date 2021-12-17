@@ -41,7 +41,7 @@ export default function Classroom({list, title}){
            <List 
                 sx={{ width: '100%', bgcolor: 'background.paper' }}
                 subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
+                    <ListSubheader component="div" id="nested-list-subheader" style={{paddingLeft: 0}}>
                         <Typography variant="h6" component="div" color="black">
                             {title}
                         </Typography>

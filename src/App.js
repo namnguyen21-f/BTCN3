@@ -100,7 +100,13 @@ function App() {
        
         <Route path="/class/:classId/invite/:id" component={DecodeLink}/>
         <Route path="/class/:classId/inviteUrl" component={DecodeUrlLink}/>
-        <Route exact path="/:id/assignment" component={StructuralPage}/>
+        <Route exact path="/:id/assignment/:assId" render={() => (
+           <StructuralPage user={user} />
+        )} />
+        <Route exact path="/:id/assignment" render={() => (
+          <StructuralPage user={user} authed={true} />
+        )} />
+        
         <Route exact path="/:id/structGrade" component={AddStructGrade}/>
         <Route exact path="/:id/gradeTable" component={GradeTable}/>
       </div> 
