@@ -9,9 +9,16 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { saveAs } from 'file-saver';
-import {TextField, List, ListItem, ListItemText} from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Divider from '@mui/material/Divider';
+import {TextField, Grid} from '@mui/material';
+import { IconButton, MenuItem, Menu, Container } from "@material-ui/core";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV'
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import React from "react";
+import PopUp from "../components/Popup";
+import { Typography, Box, Button } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 function startDownload(file, fileName) {
     const url = window.URL.createObjectURL(new Blob([file]));
     const link = document.createElement('a');
@@ -29,9 +36,9 @@ const GradeTable= ()=>{
     const [listStudent, setListStudent]= useState([]);
     const [listStudentSigned, setListStudentSigned]= useState(null);
     const [checkStudentSigned, setCheckStudentSigned]= useState(false);
-    const [isOpen, setIsOpen]= useState(false);
-    const [listGrade, setListGrade]= useState([]);
-    // const [grade, setGrade]= useState(0);
+    const [popupFile, setPopupFile]= useState(false);
+    const [listAssignemnt, setListAssignment]= useState([])
+    const [listTotalGrade, setListTotalGrade]= useState(null)
 
     useEffect(() => {
         axios.get(api+ `class/${id}/classDetail`)
@@ -52,7 +59,33 @@ const GradeTable= ()=>{
             setListStudentSigned(response.data.data.s_arr);
         })
         .catch(err=> console.log("err", err.response.data.message));
-        
+
+        axios.get(api+ `class/${id}/getTotalGrade`, 
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('Authorization'),
+            },
+        })
+        .then(response=>{
+            setListTotalGrade(response.data.data)
+            console.log(listTotalGrade)
+        })
+        .catch(err=>{
+            console.log('err', err)
+        })
+
+        axios.get(api+ `class/${id}/getAss`, 
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('Authorization'),
+            },
+        })
+        .then(response=>{
+            setListAssignment(response.data)
+        })
+
     }, []);
 
     const style = {
@@ -87,10 +120,6 @@ const GradeTable= ()=>{
         });;
     }
 
-    const onChange= (e)=>{
-        setFile(e.target.files[0]);        
-    }
-
     const uploadStudentList= ()=>{
         const formData= new FormData();
         formData.append("files", file);
@@ -105,7 +134,6 @@ const GradeTable= ()=>{
             })
             .then(response => {
                 alert("Successful");
-                console.log(response);
             }).catch(err => {
                 alert(err.response.data.message);
             });
@@ -127,7 +155,8 @@ const GradeTable= ()=>{
         return <TableCell>{studentId}</TableCell>
     }
 
-    const downloadStructAss= ()=>{
+    const downloadStructAss= (popupState)=>{
+        popupState.close();
         axios.get(api +  '/class/grade/template', 
         {
             responseType: 'arraybuffer',
@@ -148,6 +177,15 @@ const GradeTable= ()=>{
         });;
     }
 
+    const popupUpload= (popupState, assId)=>{
+        popupState.close();
+        setPopupFile(true);
+    }
+
+    const chooseFile= (e)=>{
+        setFile(e.target.files[0]);        
+    }
+
     const uploadGradeAss= (assId)=>{
         const formData= new FormData();
         formData.append("files", file);
@@ -162,7 +200,6 @@ const GradeTable= ()=>{
             })
             .then(response => {
                 alert("Successful");
-                console.log(response);
             }).catch(err => {
                 alert(err.response.data.message);
             });
@@ -173,7 +210,7 @@ const GradeTable= ()=>{
 
     const inputGradeStudent= (gradeAss, assId, stuId)=>{
         
-        axios.post(api +  `/class/${id}/${assId}/${stuId}/update/grade`, {grade: gradeAss},
+        axios.post(api +  `/class/${id}/${assId}/${stuId}/update/grade`, {grade: gradeAss, studentId: stuId},
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -187,29 +224,42 @@ const GradeTable= ()=>{
         });
     }
 
-    const getListGrade= (assId)=>{
-        axios.get(api +  `/class/${id}/${assId}/download/xlsx`, 
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('Authorization'),
-            },
-        })
-        .then(response => {
-            console.log(response);
-        }).catch(err => {
-            alert(err.response.data.message);
-        });
+    
+    const getGradeStudent= (studentId, assId)=>{
+        for(let ass of listAssignemnt){
+            if(assId == ass._id){
+                for(let stu of ass.studentGrade){
+                    if(stu.studentId == studentId){
+                        return stu.grade
+                    }
+                }
+            }
+        }
+        // return 0
     }
+
+
+    const getTotalGradeEachStudent= (studentId)=>{
+        console.log(listAssignemnt)
+        for(let stu of listTotalGrade){
+            if(stu.studentId == studentId){
+                return stu.mean
+            }
+        }
+    }
+
 
     return (
         <div>
-            <button onClick={downloadStructStudent}>Download List Student</button>
-            <input type="file" onChange={onChange}/>
-            <button onClick={uploadStudentList}>Upload</button>
-            {/* <Button variant="contained" component="label" onClick={uploadStudentList}> Upload File
-                    <input type="file" hidden />
-            </Button> */}
+            <Box sx={
+                {width: 600, height: 50, mt: 5, textAlign: 'center', ml: 1}
+            }>
+                <Grid container justifyContent={"space-between"} spacing={0}>
+                    <Button onClick={downloadStructStudent}>Download List Student</Button>
+                    <input type="file" onChange={chooseFile}/>
+                    <Button onClick={uploadStudentList}>Upload</Button>
+                </Grid>
+            </Box>
             {cls && 
                 <Paper>
                     <Table>
@@ -218,38 +268,53 @@ const GradeTable= ()=>{
                                 <TableCell>Student Id</TableCell>
                                 {cls.assignmentList.map(ass=>(
                                     <TableCell id={ass._id}>{ass.name}
-                                        {/* <MoreVertIcon onClick={()=>{setIsOpen(!isOpen)}}/>
-                                        {isOpen && <List sx={style} component="nav" aria-label="mailbox folders">
-                                            <ListItem button>
-                                                <ListItemText onClick={downloadStructAss} primary="Download template" />
-                                            </ListItem>
-                                            <Divider />
-                                            <ListItem button >
-                                                <ListItemText onClick={()=>{uploadGradeAss(ass._id)}} primary="Upload grade"/>
-                                            </ListItem>
-                                            <Divider/>
-                                        </List>} */}
-                                        <button onClick={downloadStructAss}>Download Structural Grade</button>
-                                        <input type="file" onChange={onChange}/>
-                                        <button onClick={()=>{uploadGradeAss(ass._id)}}>Upload</button>
+                                        <PopupState variant="popover">
+                                            {(popupState)=>(
+                                                <React.Fragment>
+                                                    <IconButton variant="contained" {...bindTrigger(popupState)}>
+                                                        <FontAwesomeIcon icon={faEllipsisV} size="xs"/>
+                                                    </IconButton>
+                                                    <Menu {...bindMenu(popupState)}>
+                                                        <MenuItem onClick={()=> {downloadStructAss(popupState)}}>Download</MenuItem>
+                                                        <MenuItem onClick={()=>{popupUpload(popupState)}}>Upload</MenuItem>
+                                                    </Menu>
+                                                </React.Fragment>
+                                            )
+
+                                            }
+                                        </PopupState>
+                                        {popupFile && 
+                                            <PopUp onClose={()=>{setPopupFile(false)}}>
+                                                <Box component="form" noValidate autoComplete="off">
+                                                    <Typography variant="h4" component="div" color="black" style={{textAlign: "center", marginBottom: "1.5rem"}}>
+                                                        Select file to upload
+                                                    </Typography>
+                                                    <input type="file" onChange={chooseFile}/>
+                                                    <Button onClick={() => {uploadGradeAss(ass._id)}} variant="contained">Upload</Button>
+                                                </Box>
+                                            </PopUp>}
                                     </TableCell>
                                 ))}
                                 <TableCell>Total</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {listStudent.map(student=>(
+                            {listTotalGrade && listStudent.map(student=>(
                                 <TableRow id={student.studentId}>
-                                    { listStudentSigned &&
+                                    {
                                         checkMapStudent(student.studentId)
                                     }
                                     {cls.assignmentList.map(ass=>(
-                                        // {getListGrade(ass._id)}
                                         <TableCell id={ass._id}>
-                                            <TextField type="number" variant="standard" onChange={(e)=> inputGradeStudent(e.target.value, ass._id, student.studentId)}/>
+                                            {       
+                                                <TextField type="number" onChange={(e)=> inputGradeStudent(e.target.value, ass._id, student.studentId)} 
+                                                    value={getGradeStudent(student.studentId, ass._id)} variant="standard"/>
+                                            }
                                         </TableCell>
                                     ))}
-                                    <TableCell></TableCell>
+                                    <TableCell>
+                                        {getTotalGradeEachStudent(student.studentId)}
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
