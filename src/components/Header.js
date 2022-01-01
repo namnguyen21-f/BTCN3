@@ -136,6 +136,9 @@ export default function Header({className , onAddClassHandle, onManageProfile,
                                     <Link to={"/" + classId + "/gradeTable"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
                                         Table Grade
                                     </Link>
+                                    <Link to={"/" + classId + "/gradeReview"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
+                                        Grade Review
+                                    </Link>
                                 </List>
                         
                             }

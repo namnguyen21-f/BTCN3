@@ -18,6 +18,7 @@ import React from "react";
 import PopUp from "../components/Popup";
 import { Typography, Box, Button } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 function startDownload(file, fileName) {
     const url = window.URL.createObjectURL(new Blob([file]));
@@ -39,6 +40,7 @@ const GradeTable= ()=>{
     const [popupFile, setPopupFile]= useState(false);
     const [listAssignemnt, setListAssignment]= useState([])
     const [listTotalGrade, setListTotalGrade]= useState(null)
+    const [finalize, setFinalize]= useState([])
 
     useEffect(() => {
         axios.get(api+ `class/${id}/classDetail`)
@@ -69,7 +71,6 @@ const GradeTable= ()=>{
         })
         .then(response=>{
             setListTotalGrade(response.data.data)
-            console.log(listTotalGrade)
         })
         .catch(err=>{
             console.log('err', err)
@@ -85,6 +86,25 @@ const GradeTable= ()=>{
         .then(response=>{
             setListAssignment(response.data)
         })
+        .catch(err=>{
+            console.log('err', err)
+        })
+
+        axios.get(api+ `class/${id}/studentMarked`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('Authorization'),
+            },
+        })
+        .then(response=>{
+            console.log(response.data)
+            setFinalize(response.data)
+        })
+        .catch(err=>{
+            console.log('err', err)
+        })
+
 
     }, []);
 
@@ -240,12 +260,35 @@ const GradeTable= ()=>{
 
 
     const getTotalGradeEachStudent= (studentId)=>{
-        console.log(listAssignemnt)
         for(let stu of listTotalGrade){
             if(stu.studentId == studentId){
-                return stu.mean
+                return <TableCell>{stu.mean}</TableCell>
             }
         }
+    }
+
+    const markFinalize= (assId, studentId)=>{
+        axios.post(api +  `/class/${id}/${assId}/${studentId}/markFinalize`, {mark: true},
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('Authorization'),
+            },
+        })
+        .then(response => {
+            setFinalize([...finalize, [assId, studentId]])
+        }).catch(err => {
+            alert(err.response.data.message);
+        });
+    }
+
+    const setColorMark= (assId, studentId)=>{
+        for(let a of finalize){
+            if(assId == a[0] && studentId == a[1]){
+                return true
+            }
+        }
+        return false
     }
 
 
@@ -301,20 +344,15 @@ const GradeTable= ()=>{
                         <TableBody>
                             {listTotalGrade && listStudent.map(student=>(
                                 <TableRow id={student.studentId}>
-                                    {
-                                        checkMapStudent(student.studentId)
-                                    }
+                                    {checkMapStudent(student.studentId)}
                                     {cls.assignmentList.map(ass=>(
                                         <TableCell id={ass._id}>
-                                            {       
                                                 <TextField type="number" onChange={(e)=> inputGradeStudent(e.target.value, ass._id, student.studentId)} 
                                                     value={getGradeStudent(student.studentId, ass._id)} variant="standard"/>
-                                            }
+                                                <CheckCircleIcon onClick={()=>{markFinalize(ass._id, student.studentId)}} color={setColorMark(ass._id, student.studentId) ? "primary": "default"} fontSize="small"></CheckCircleIcon>
                                         </TableCell>
                                     ))}
-                                    <TableCell>
-                                        {getTotalGradeEachStudent(student.studentId)}
-                                    </TableCell>
+                                    {getTotalGradeEachStudent(student.studentId)}
                                 </TableRow>
                             ))}
                         </TableBody>
