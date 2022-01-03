@@ -9,7 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { saveAs } from 'file-saver';
-import {TextField, Grid} from '@mui/material';
+import {TextField, Link, Grid} from '@mui/material';
 import { IconButton, MenuItem, Menu, Container } from "@material-ui/core";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV'
@@ -35,8 +35,7 @@ const GradeTable= ()=>{
     const [file, setFile]= useState();
     const [cls , setCls] = useState(null);
     const [listStudent, setListStudent]= useState([]);
-    const [listStudentSigned, setListStudentSigned]= useState(null);
-    const [checkStudentSigned, setCheckStudentSigned]= useState(false);
+    const [listStudentSigned, setListStudentSigned]= useState([]);
     const [popupFile, setPopupFile]= useState(false);
     const [listAssignemnt, setListAssignment]= useState([])
     const [listTotalGrade, setListTotalGrade]= useState(null)
@@ -98,7 +97,6 @@ const GradeTable= ()=>{
             },
         })
         .then(response=>{
-            console.log(response.data)
             setFinalize(response.data)
         })
         .catch(err=>{
@@ -163,14 +161,10 @@ const GradeTable= ()=>{
     }
 
     const checkMapStudent= (studentId)=>{
-        listStudentSigned.map(student=>{
-            if(studentId == student.studentId){
-                setCheckStudentSigned(true);
+        for(let i=0;i<listStudentSigned.length;i++){
+            if(studentId == listStudentSigned[i].studentId){
+                return <TableCell><Link href="#">{studentId}</Link></TableCell>
             }
-        });
-        if(checkStudentSigned){
-            setCheckStudentSigned(false);
-            return <TableCell><a href="#">{studentId}</a></TableCell>;
         }
         return <TableCell>{studentId}</TableCell>
     }
@@ -267,8 +261,8 @@ const GradeTable= ()=>{
         }
     }
 
-    const markFinalize= (assId, studentId)=>{
-        axios.post(api +  `/class/${id}/${assId}/${studentId}/markFinalize`, {mark: true},
+    const markFinalize= (assId)=>{
+        axios.post(api +  `/class/${id}/${assId}/markFinalize`, {mark: true},
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -276,15 +270,15 @@ const GradeTable= ()=>{
             },
         })
         .then(response => {
-            setFinalize([...finalize, [assId, studentId]])
+            setFinalize([...finalize, assId])
         }).catch(err => {
             alert(err.response.data.message);
         });
     }
 
-    const setColorMark= (assId, studentId)=>{
-        for(let a of finalize){
-            if(assId == a[0] && studentId == a[1]){
+    const setColorMark= (assId)=>{
+        for(let i=0; i<finalize.length; i++){
+            if(assId == finalize[i]){
                 return true
             }
         }
@@ -310,7 +304,7 @@ const GradeTable= ()=>{
                             <TableRow style={{textAlign: 'center'}}>
                                 <TableCell>Student Id</TableCell>
                                 {cls.assignmentList.map(ass=>(
-                                    <TableCell id={ass._id}>{ass.name}
+                                    <TableCell id={ass._id.toString()}>{ass.name}
                                         <PopupState variant="popover">
                                             {(popupState)=>(
                                                 <React.Fragment>
@@ -326,6 +320,7 @@ const GradeTable= ()=>{
 
                                             }
                                         </PopupState>
+                                        <CheckCircleIcon onClick={()=>{markFinalize(ass._id)}} color={setColorMark(ass._id) ? "primary": "default"} fontSize="small"></CheckCircleIcon>
                                         {popupFile && 
                                             <PopUp onClose={()=>{setPopupFile(false)}}>
                                                 <Box component="form" noValidate autoComplete="off">
@@ -343,13 +338,12 @@ const GradeTable= ()=>{
                         </TableHead>
                         <TableBody>
                             {listTotalGrade && listStudent.map(student=>(
-                                <TableRow id={student.studentId}>
+                                <TableRow id={student.studentId.toString()}>
                                     {checkMapStudent(student.studentId)}
                                     {cls.assignmentList.map(ass=>(
-                                        <TableCell id={ass._id}>
+                                        <TableCell id={Math.random().toString()}>
                                                 <TextField type="number" onChange={(e)=> inputGradeStudent(e.target.value, ass._id, student.studentId)} 
                                                     value={getGradeStudent(student.studentId, ass._id)} variant="standard"/>
-                                                <CheckCircleIcon onClick={()=>{markFinalize(ass._id, student.studentId)}} color={setColorMark(ass._id, student.studentId) ? "primary": "default"} fontSize="small"></CheckCircleIcon>
                                         </TableCell>
                                     ))}
                                     {getTotalGradeEachStudent(student.studentId)}

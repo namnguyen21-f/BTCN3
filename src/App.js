@@ -12,7 +12,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import StructuralPage from './pages/StructuralPage';
 import AddStructGrade from './pages/AddStructGrade';
 import GradeTable from './pages/GradeTable'
-import GradeReview from './pages/GradeReview'
+import GradeStudent from './pages/GradeStudent'
 
 
 function DecodeLink(){
@@ -111,7 +111,7 @@ function App() {
         
         <Route exact path="/:id/structGrade" component={AddStructGrade}/>
         <Route exact path="/:id/gradeTable" component={GradeTable}/>
-        <Route exact path="/:id/gradeReview" component={GradeReview}/>
+        <Route exact path="/:id/grade" component={GradeStudent}/>
       </div> 
     </Router>
   );
