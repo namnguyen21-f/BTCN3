@@ -13,6 +13,7 @@ import StructuralPage from './pages/StructuralPage';
 import AddStructGrade from './pages/AddStructGrade';
 import GradeTable from './pages/GradeTable'
 import GradeStudent from './pages/GradeStudent'
+import GradeReview from './pages/GradeReview';
 
 
 function DecodeLink(){
@@ -112,6 +113,7 @@ function App() {
         <Route exact path="/:id/structGrade" component={AddStructGrade}/>
         <Route exact path="/:id/gradeTable" component={GradeTable}/>
         <Route exact path="/:id/grade" component={GradeStudent}/>
+        <Route exact path="/:id/gradeReview" component={GradeReview}/>
       </div> 
     </Router>
   );

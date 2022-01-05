@@ -255,7 +255,7 @@ const GradeTable= ()=>{
 
     const getTotalGradeEachStudent= (studentId)=>{
         for(let stu of listTotalGrade){
-            if(stu.studentId == studentId){
+            if(stu.studentId == studentId){ 
                 return <TableCell>{stu.mean}</TableCell>
             }
         }
