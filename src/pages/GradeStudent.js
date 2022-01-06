@@ -2,7 +2,7 @@ import axios from "axios";
 import api from '../uri';
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
-import {Paper, Table, TableHead, TableRow, TableCell, TableBody, Container} from '@mui/material';
+import {Paper, Table, TableHead, TableRow, TableCell, TableBody, Container, AlertTitle} from '@mui/material';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import { Typography, Box, TextField, Button, Grid, Alert, Divider} from '@mui/material';
 import PopUp from "../components/Popup";
@@ -17,6 +17,7 @@ const GradeStudent= ()=>{
     const [cls, setCls]= useState(null)
     const [listGrade, setListGrade]= useState([])
     const [popupRequest, setPopupRequest]= useState(false)
+    const [listRequest, setListRequest]= useState([])
 
     useEffect(()=>{
         axios.get(api+ `class/${id}/classDetail`)
@@ -35,16 +36,28 @@ const GradeStudent= ()=>{
         })
         .catch(err=> {
             if(err.response.data.message== "Teacher does not have permisson"){
-                <Alert severity="error">Teacher does not have permisson</Alert>
+                alert("Teacher does not have permisson")
             }else{
-                <Alert severity="error">{err.response}</Alert>
+                alert(err.response.data.err)
             }
         });
+
+        axios.get(api+ `class/${id}/getComments`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('Authorization'),
+            },
+        })
+        .then(response=>{
+            setListRequest(response.data)
+        })
+        .catch(err=>{
+            alert(err.response.data.err)
+        })
 
     }, [])
 
     const getGradeAssignment= (assId)=>{
-        console.log(listGrade)
         if(listGrade.gradeAss){
             for(let grade of listGrade.gradeAss){
                 if(grade[0]==assId){
@@ -65,11 +78,20 @@ const GradeStudent= ()=>{
         .then(response => {
             setPopupRequest(false)
         }).catch(err => {
-            <Alert severity="error">{err.response}</Alert>
+            alert(err.response.data.err)
         });
     }
 
     const addAComment=(studentId, assId)=>{
+        let flag=0
+        for(let req of listRequest){
+            if(req.assId==assId){
+                flag=1
+            }
+        }
+        if(flag==0){
+            return alert("You must send a request for this assignment")
+        }
         axios.post(api+ `/class/${studentId}/${assId}/comment`, {text: comment},
         {
             headers: {
@@ -80,7 +102,7 @@ const GradeStudent= ()=>{
         .then(response=> {
             
         }).catch(err => {
-            <Alert severity="error">{err.response}</Alert>
+            alert(err.response.data.err)
         });
 
     }
@@ -155,12 +177,23 @@ const GradeStudent= ()=>{
                                     <Paper>
                                         <Typography p={1}>{ass.name}</Typography>
                                         <Divider/>
+                                        <Box>
+                                            {listRequest.map(req=>(
+                                                req.studentId == listGrade.studentId && ass._id == req.assId && 
+                                                    req.comment.map(comment=>(
+                                                    <Box p={1}>
+                                                        <Typography>{comment.name}</Typography>
+                                                        <Typography color="text.secondary">{comment.text}</Typography>
+                                                    </Box>     
+                                                    ))
+                                            ))}
+                                        </Box>
                                         <Box p={1}>
-                                                <div style={{position: 'relative', display: 'inline-block'}}>
-                                                    <TextField variant="standard" label="Add a comment..." onChange={(e)=>{comment= e.target.value}} sx={{width: 1100}}/>
-                                                    <SendIcon onClick={()=> addAComment(listGrade.studentId, ass._id)} fontSize="small" style={{position: 'absolute', right: 0, top: 20, width: 20, height: 20}}/>
-                                                </div>
-                                            </Box>
+                                            <div style={{position: 'relative', display: 'inline-block'}}>
+                                                <TextField variant="standard" label="Add a comment..." onChange={(e)=>{comment= e.target.value}} sx={{width: 1100}}/>
+                                                <SendIcon onClick={()=> addAComment(listGrade.studentId, ass._id)} fontSize="small" style={{position: 'absolute', right: 0, top: 20, width: 20, height: 20}}/>
+                                            </div>
+                                        </Box>
                                     </Paper>
                                 </Grid>
                                 ))}
