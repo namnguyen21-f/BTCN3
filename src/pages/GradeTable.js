@@ -40,6 +40,7 @@ const GradeTable= ()=>{
     const [listAssignemnt, setListAssignment]= useState([])
     const [listTotalGrade, setListTotalGrade]= useState(null)
     const [finalize, setFinalize]= useState([])
+    const [stuFinalize, setStuFinalize]= useState([])
 
     useEffect(() => {
         axios.get(api+ `class/${id}/classDetail`)
@@ -89,7 +90,7 @@ const GradeTable= ()=>{
             console.log('err', err)
         })
 
-        axios.get(api+ `class/${id}/studentMarked`,
+        axios.get(api+ `class/${id}/assMarked`,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -102,6 +103,21 @@ const GradeTable= ()=>{
         .catch(err=>{
             console.log('err', err)
         })
+
+        axios.get(api+ `class/${id}/getFinalStudent`,
+         {
+             headers: {
+                 'Content-Type': 'application/json',
+                 'Authorization': localStorage.getItem('Authorization'),
+             },
+         })
+         .then(response=>{
+             console.log(response.data)
+             setStuFinalize(response.data)
+         })
+         .catch(err=>{
+             console.log('err', err)
+         })
 
 
     }, []);
@@ -285,6 +301,31 @@ const GradeTable= ()=>{
         return false
     }
 
+    const markFinalizeStudent= (assId, studentId)=>{
+        axios.post(api +  `/class/${id}/${assId}/${studentId}/finalizeStudent`, {mark: true},
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('Authorization'),
+            },
+        })
+        .then(response => {
+            setStuFinalize([...stuFinalize, [assId, studentId]])
+        }).catch(err => {
+            alert(err.response.data.message);
+        });
+    }
+
+    const setColorMarkStudent= (assId, studentId)=>{
+        for(let a of stuFinalize){
+            if(assId == a[0] && studentId == a[1]){
+                return true
+            }
+        }
+        return false
+    }
+
+
 
     return (
         <div>
@@ -341,9 +382,10 @@ const GradeTable= ()=>{
                                 <TableRow id={student.studentId.toString()}>
                                     {checkMapStudent(student.studentId)}
                                     {cls.assignmentList.map(ass=>(
-                                        <TableCell id={Math.random().toString()}>
+                                        <TableCell key={Math.random().toString()}>
                                                 <TextField type="number" onChange={(e)=> inputGradeStudent(e.target.value, ass._id, student.studentId)} 
                                                     value={getGradeStudent(student.studentId, ass._id)} variant="standard"/>
+                                                <CheckCircleIcon onClick={()=>{markFinalizeStudent(ass._id, student.studentId)}} color={setColorMarkStudent(ass._id, student.studentId) ? "primary": "default"} fontSize="small"></CheckCircleIcon>
                                         </TableCell>
                                     ))}
                                     {getTotalGradeEachStudent(student.studentId)}

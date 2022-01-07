@@ -42,7 +42,7 @@ const GradeStudent= ()=>{
             }
         });
 
-        axios.get(api+ `class/${id}/getComments`, {
+        axios.get(api+ `class/${id}/getAllRequest`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem('Authorization'),
@@ -100,7 +100,7 @@ const GradeStudent= ()=>{
             },
         })
         .then(response=> {
-            
+            // alert(response.data.message)
         }).catch(err => {
             alert(err.response.data.err)
         });
@@ -152,7 +152,7 @@ const GradeStudent= ()=>{
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {listGrade &&
+                                {listGrade.length != 0 &&
                                     <TableRow>
                                         <TableCell>{listGrade.studentId}</TableCell>
                                         {cls.assignmentList.map(ass=>(
