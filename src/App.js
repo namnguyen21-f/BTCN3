@@ -99,7 +99,9 @@ function App() {
               <HomePage user={user} authed={true} />
             )} /> }
         
-        <Route exact path="/:id/classDetail" component={ClassDetail}/>
+        <Route exact path="/:id/classDetail" render={() => (
+           <ClassDetail user={user} />
+        )} />
        
         <Route path="/class/:classId/invite/:id" component={DecodeLink}/>
         <Route path="/class/:classId/inviteUrl" component={DecodeUrlLink}/>
@@ -110,7 +112,9 @@ function App() {
           <StructuralPage user={user} authed={true} />
         )} />
         
-        <Route exact path="/:id/structGrade" component={AddStructGrade}/>
+        <Route exact path="/:id/structGrade" render={() => (
+           <AddStructGrade user={user} />
+        )} />
         <Route exact path="/:id/gradeTable" component={GradeTable}/>
         <Route exact path="/:id/grade" component={GradeStudent}/>
         <Route exact path="/:id/gradeReview" component={GradeReview}/>

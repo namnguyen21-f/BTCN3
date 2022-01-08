@@ -69,7 +69,7 @@ export default function Assignment({user, assList, title, cls , onRemove}){
                                         Grade: {ele.grade}
                                     </Typography>
                                     <Typography variant="body1" component="div" color="gray">
-                                        Created At: {new Date(ele.createdAt).getDate() + " " + new Date(ele.createdAt).getMonth() + " " + new Date(ele.createdAt).getFullYear()}
+                                        Created At: {new Date(ele.createdAt).getDate() + " " + (new Date(ele.createdAt).getMonth()+1) + " " + new Date(ele.createdAt).getFullYear()}
                                     </Typography>
                                 </Box>
                                 {user.role == "teacher" && cls.createdBy == user._id && <Box component="div" style={{width: "100px"}}>

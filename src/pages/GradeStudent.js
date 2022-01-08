@@ -182,8 +182,11 @@ const GradeStudent= ()=>{
                                                 req.studentId == listGrade.studentId && ass._id == req.assId && 
                                                     req.comment.map(comment=>(
                                                     <Box p={1}>
-                                                        <Typography>{comment.name}</Typography>
-                                                        <Typography color="text.secondary">{comment.text}</Typography>
+                                                        <Typography variant="h6" style={{display: 'inline-block'}} pr={1}>{comment.name}</Typography>
+                                                        <Typography variant="body1" component="div" color="gray" style={{display: 'inline-block'}}>
+                                                            {new Date(comment.createAt).getDate() + "-" + (new Date(comment.createAt).getMonth()+1) + "-" + new Date(comment.createAt).getFullYear()}
+                                                        </Typography>
+                                                        <Typography>{comment.text}</Typography>
                                                     </Box>     
                                                     ))
                                             ))}

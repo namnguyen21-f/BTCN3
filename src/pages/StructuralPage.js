@@ -102,7 +102,8 @@ const StructuralPage= ({user})=>{
                 <Header classId= {cls._id}
                     className={cls.className} 
                     onManageProfile = {() => {setisPopupProfile(true)}}
-                    onAddClassHandle={() => {setisPopup(true)}}>
+                    onAddClassHandle={() => {setisPopup(true)}}
+                    role= {user.role}>
                 </Header>}
               
               {cls && 

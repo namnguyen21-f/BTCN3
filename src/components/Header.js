@@ -81,7 +81,7 @@ const style = {
 };
 
 export default function Header({className , onAddClassHandle, onManageProfile, 
-    classId , clsName}){
+    classId , clsName, role}){
     const classes = useStyles();
     const [isOpen , setIsOpen] = useState(false);
     const [notifications , setNotifications] = useState([]);
@@ -93,6 +93,7 @@ export default function Header({className , onAddClassHandle, onManageProfile,
         flag= true;
         clsName= className;
     }
+    console.log(role)
 
     useEffect(() => {
         axios.get(api +  'notififcations' ,
@@ -130,18 +131,26 @@ export default function Header({className , onAddClassHandle, onManageProfile,
                                     <Link to={"/" + classId + "/assignment"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
                                         Assignment
                                     </Link>
-                                    <Link to={"/" + classId + "/structGrade"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
-                                        Create Struct Grade
-                                    </Link>
-                                    <Link to={"/" + classId + "/gradeTable"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
-                                        Table Grade
-                                    </Link>
-                                    <Link to={"/" + classId + "/grade"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
-                                        Grade
-                                    </Link>
-                                    <Link to={"/" + classId + "/gradeReview"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
-                                        Grade Review
-                                    </Link>
+                                    {role == "teacher" && 
+                                        <Link to={"/" + classId + "/structGrade"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
+                                            Create Struct Grade
+                                        </Link>
+                                    }
+                                    {role=="teacher" && 
+                                        <Link to={"/" + classId + "/gradeTable"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
+                                            Table Grade
+                                        </Link>
+                                    }
+                                    {role== "teacher" && 
+                                        <Link to={"/" + classId + "/gradeReview"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
+                                            Grade Review
+                                        </Link>
+                                    }
+                                    {role == "user" &&
+                                        <Link to={"/" + classId + "/grade"} style={{margin: "0 1rem" , color: "#1B74E4"}}>
+                                            Grade
+                                        </Link>
+                                    }
                                 </List>
                         
                             }

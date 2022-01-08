@@ -101,7 +101,7 @@ const GradeReview= ()=>{
                                 {cls.assignmentList.map(ass=>(
                                     <Grid item xs={12}>
                                         <Paper>
-                                            <Typography p={1}>{ass.name}</Typography>
+                                            <Typography variant="h6" p={1}>{ass.name}</Typography>
                                             <Divider/>
                                             {allRequest.map(req=>(
                                                 ass._id==req.assId &&
@@ -118,18 +118,21 @@ const GradeReview= ()=>{
                                                             <Box>
                                                                 <Grid container layout={"row"} spacing={5}>
                                                                     <Grid item xs={12}>
-                                                                        <Typography p={1}>Comment</Typography>
+                                                                        {/* <Typography pt={1} pl={1}>Comment</Typography> */}
                                                                         <Box>
                                                                             {req.comment.map(comment=>(
                                                                             <Box p={1}>
-                                                                                <Typography>{comment.name}</Typography>
-                                                                                <Typography color="text.secondary">{comment.text}</Typography>
+                                                                                <Typography variant="h6" style={{display: 'inline-block'}} pr={1}>{comment.name}</Typography>
+                                                                                <Typography variant="body1" component="div" color="gray" style={{display: 'inline-block'}}>
+                                                                                    {new Date(comment.createAt).getDate() + "-" + (new Date(comment.createAt).getMonth()+1) + "-" + new Date(comment.createAt).getFullYear()}
+                                                                                </Typography>                                                                             
+                                                                                <Typography>{comment.text}</Typography>
                                                                             </Box>     
                                                                             ))}
                                                                         </Box>
                                                                         <Box p={1}>
                                                                             <div style={{position: 'relative', display: 'inline-block'}}>
-                                                                                <TextField variant="standard" label="Add a comment..." onChange={(e)=>{comment= e.target.value}} sx={{width: 1100}}/>
+                                                                                <TextField variant="standard" label="Add a comment..." onChange={(e)=>{comment= e.target.value}} sx={{width: 1130}}/>
                                                                                 <SendIcon onClick={()=> addAComment(req.studentId, req.assId)} fontSize="small" style={{position: 'absolute', right: 0, top: 20, width: 20, height: 20}}/>
                                                                             </div>
                                                                         </Box>

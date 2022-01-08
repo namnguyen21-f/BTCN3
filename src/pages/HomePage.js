@@ -107,6 +107,7 @@ function HomePage({user}) {
         onAddClassHandle={() => {setisPopup(true)}}
       
         clsName={user.role == "admin" ? "AdminPage" : "HomePage"}
+        role= {user.role}
         ></Header>
 
       {user.role != "admin" && 

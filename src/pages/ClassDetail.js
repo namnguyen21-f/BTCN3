@@ -13,7 +13,7 @@ import ShowListTS from '../components/ShowListTS';
 
 
 
-const ClassDetail= ()=>{
+const ClassDetail= ({user})=>{
     const { id } = useParams();
     const [cls , setCls] = useState(null);
     const [isPopup, setisPopup] = useState(false)
@@ -82,7 +82,8 @@ const ClassDetail= ()=>{
                 <Header classId= {cls._id}
                     className={cls.className} 
                     onManageProfile = {() => {setisPopupProfile(true)}}
-                    onAddClassHandle={() => {setisPopup(true)}}>
+                    onAddClassHandle={() => {setisPopup(true)}}
+                    role={user.role}>
                 </Header>}
             {cls && <Container fixed> 
                 

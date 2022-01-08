@@ -16,7 +16,7 @@ import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
 
 
 
-const AddStructGrade= ()=>{
+const AddStructGrade= ({user})=>{
     const { id } = useParams();
     const [cls , setCls] = useState(null);
     const [isPopup, setisPopup] = useState(false)
@@ -180,7 +180,8 @@ const AddStructGrade= ()=>{
                 <Header classId= {cls._id}
                     className={cls.className} 
                     onManageProfile = {() => {setisPopupProfile(true)}}
-                    onAddClassHandle={() => {setisPopup(true)}}>
+                    onAddClassHandle={() => {setisPopup(true)}}
+                    role={user.role}>
                 </Header>}
             <Container fixed className= "form"> 
                 <div className="section">
