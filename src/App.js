@@ -115,9 +115,15 @@ function App() {
         <Route exact path="/:id/structGrade" render={() => (
            <AddStructGrade user={user} />
         )} />
-        <Route exact path="/:id/gradeTable" component={GradeTable}/>
-        <Route exact path="/:id/grade" component={GradeStudent}/>
-        <Route exact path="/:id/gradeReview" component={GradeReview}/>
+        <Route exact path="/:id/gradeTable" render={() => (
+           <GradeTable user={user} />
+        )} />
+        <Route exact path="/:id/grade" render={() => (
+           <GradeStudent user={user} />
+        )} />
+        <Route exact path="/:id/gradeReview" render={() => (
+           <GradeReview user={user} />
+        )} />
       </div> 
     </Router>
   );

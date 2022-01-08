@@ -19,6 +19,9 @@ import PopUp from "../components/Popup";
 import { Typography, Box, Button } from '@mui/material';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Header from '../components/Header';
+import AddClassForm from '../components/AddClassForm';
+import ManageProfileForm from '../components/ManageProfileForm';
 
 function startDownload(file, fileName) {
     const url = window.URL.createObjectURL(new Blob([file]));
@@ -30,7 +33,7 @@ function startDownload(file, fileName) {
     link.parentNode.removeChild(link);
 }
 
-const GradeTable= ()=>{
+const GradeTable= ({user})=>{
     const { id } = useParams();
     const [file, setFile]= useState();
     const [cls , setCls] = useState(null);
@@ -41,6 +44,9 @@ const GradeTable= ()=>{
     const [listTotalGrade, setListTotalGrade]= useState(null)
     const [finalize, setFinalize]= useState([])
     const [stuFinalize, setStuFinalize]= useState([])
+    const [isPopup, setisPopup] = useState(false)
+    const [isPopupProfile, setisPopupProfile] = useState(false)
+
 
     useEffect(() => {
         axios.get(api+ `class/${id}/classDetail`)
@@ -325,10 +331,64 @@ const GradeTable= ()=>{
         return false
     }
 
+    function onSubmitClassForm(data) {
+    
+        axios.post(api +  'class/new' , {teacher : data.teacher, className: data.className} ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('Authorization'),
+          },
+        })
+        .then(response => {
+          setisPopup(false);
+        }).catch(err => {
+          if (err.response.data.message === "Student does not have permisson"){
+            alert("Student does not have permisson") 
+          }else {
+            alert("Something wrong") 
+          }
+          setisPopup(false);
+        });;
+    }
+
+    function onSubmitProfileForm(data) {
+        axios.post(api +  'changeProfile' , data ,
+        {
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('Authorization'),
+            },
+        })
+        .then(response => {
+            setisPopupProfile(false);
+        }).catch(err => {
+            if (err.response.data.message === "User is not valid"){
+            alert("User is not valid") 
+            }
+            setisPopupProfile(false);
+        });;
+      }
+
 
 
     return (
         <div>
+            {isPopup && 
+                <PopUp onSubmit={(data) => {onSubmitClassForm(data)}} onClose={() => {setisPopup(false)}}>
+                    <AddClassForm onSubmit={onSubmitClassForm}></AddClassForm>
+                </PopUp>}
+            {isPopupProfile && 
+                <PopUp onSubmit={(data) => {onSubmitClassForm(data)}} onClose={() => {setisPopupProfile(false)}}>
+                    <ManageProfileForm onSubmit={onSubmitProfileForm}></ManageProfileForm>
+                </PopUp>}
+            { cls &&
+                <Header classId= {cls._id}
+                    className={cls.className} 
+                    onManageProfile = {() => {setisPopupProfile(true)}}
+                    onAddClassHandle={() => {setisPopup(true)}}
+                    role= {user.role}>
+                </Header>}
             <Box sx={
                 {width: 600, height: 50, mt: 5, textAlign: 'center', ml: 1}
             }>
