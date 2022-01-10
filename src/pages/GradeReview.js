@@ -44,19 +44,21 @@ const GradeReview= ({user})=>{
     }, [])
 
     const setStatus= (req)=>{
-        axios.get(api+ `class/${req.studentId}/${req.assId}/getOldGrade`, 
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('Authorization'),
-            },
-        })
-        .then(response => {
-            setOldGrade(response.data)
-            setReqDetail(req._id)
-        }).catch(err => {
-            alert(err.response)
-        });
+        setReqDetail(req._id)
+        // axios.get(api+ `class/${req.studentId}/${req.assId}/getOldGrade`, 
+        // {
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': localStorage.getItem('Authorization'),
+        //     },
+        // })
+        // .then(response => {
+        //     setOldGrade(response.data)
+        //     console.log(oldGrade)
+        //     setReqDetail(req._id)
+        // }).catch(err => {
+        //     alert(err)
+        // });
     }
 
     const getDetail= (req)=>{
@@ -65,7 +67,7 @@ const GradeReview= ({user})=>{
                 <TableHead>
                     <TableRow>
                         <TableCell>{req.studentId}</TableCell>
-                        <TableCell>Current grade: {oldGrade}</TableCell>
+                        {/* <TableCell>Current grade: {oldGrade}</TableCell> */}
                         <TableCell>Expectation grade: {req.grade}</TableCell>
                         <TableCell>{req.text}</TableCell>
                     </TableRow>

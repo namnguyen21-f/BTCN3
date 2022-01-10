@@ -40,11 +40,7 @@ const GradeStudent= ({user})=>{
             setListGrade(response.data)
         })
         .catch(err=> {
-            if(err.response.data.message== "Teacher does not have permisson"){
-                alert("Teacher does not have permisson")
-            }else{
-                alert(err.response.data.err)
-            }
+                alert(err)
         });
 
         axios.get(api+ `class/${id}/getAllRequest`, {
@@ -57,7 +53,7 @@ const GradeStudent= ({user})=>{
             setListRequest(response.data)
         })
         .catch(err=>{
-            alert(err.response.data.err)
+            alert(err)
         })
 
     }, [])
