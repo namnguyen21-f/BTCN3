@@ -118,7 +118,6 @@ const GradeTable= ({user})=>{
              },
          })
          .then(response=>{
-             console.log(response.data)
              setStuFinalize(response.data)
          })
          .catch(err=>{
@@ -283,7 +282,12 @@ const GradeTable= ({user})=>{
         }
     }
 
-    const markFinalize= (assId)=>{
+    const markFinalize= (assId, ass)=>{
+        // let listStudent= []
+        // for(let student of ass.studentGrade){
+        //     listStudent.push(student.studentId)
+        // }
+
         axios.post(api +  `/class/${id}/${assId}/markFinalize`, {mark: true},
         {
             headers: {
@@ -318,7 +322,7 @@ const GradeTable= ({user})=>{
         .then(response => {
             setStuFinalize([...stuFinalize, [assId, studentId]])
         }).catch(err => {
-            alert(err.response.data.message);
+            alert(err.response.data);
         });
     }
 
@@ -421,7 +425,7 @@ const GradeTable= ({user})=>{
 
                                             }
                                         </PopupState>
-                                        <CheckCircleIcon onClick={()=>{markFinalize(ass._id)}} color={setColorMark(ass._id) ? "primary": "default"} fontSize="small"></CheckCircleIcon>
+                                        <CheckCircleIcon onClick={()=>{markFinalize(ass._id, ass)}} color={setColorMark(ass._id) ? "primary": "default"} fontSize="small"></CheckCircleIcon>
                                         {popupFile && 
                                             <PopUp onClose={()=>{setPopupFile(false)}}>
                                                 <Box component="form" noValidate autoComplete="off">

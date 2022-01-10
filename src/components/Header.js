@@ -93,21 +93,35 @@ export default function Header({className , onAddClassHandle, onManageProfile,
         flag= true;
         clsName= className;
     }
-    console.log(role)
 
     useEffect(() => {
-        axios.get(api +  'notififcations' ,
-        {
-            headers: {
-            'Content-Type': 'application/json',
-            'Authorization': localStorage.getItem('Authorization'),
-            },
-        })
-        .then(response => {
-            setNotifications(response.data.data);
-        }).catch(err => {
-        
-        });;
+        // if(role=="teacher"){
+            axios.get(api +  'notififcations' ,
+            {
+                headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('Authorization'),
+                },
+            })
+            .then(response => {
+                setNotifications(response.data.data);
+            }).catch(err => {
+            
+            });;
+        // }else{
+        //     axios.get(api +  'class/getNotificationListStudent' ,
+        //     {
+        //         headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': localStorage.getItem('Authorization'),
+        //         },
+        //     })
+        //     .then(response => {
+        //         setNotifications(response.data.data);
+        //     }).catch(err => {
+            
+        //     });;
+        // }
     }, [])
 
     return (
@@ -194,7 +208,7 @@ export default function Header({className , onAddClassHandle, onManageProfile,
                                                 </Avatar>
                                                 }
                                                 title={ele.title}
-                                                subheader="September 14, 2016"
+                                                subheader= {new Date(ele.createdAt).getDate() + "-" + (new Date(ele.createdAt).getMonth()+1) + "-" + new Date(ele.createdAt).getFullYear()}
                                             />
                                             <CardContent style={{padding: "0 1rem"}}>
                                                 <Typography variant="body2" color="text.secondary">
