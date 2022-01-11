@@ -19,7 +19,7 @@ const GradeStudent= ({user})=>{
     const { id } = useParams();
     const [cls, setCls]= useState(null)
     const [listGrade, setListGrade]= useState([])
-    const [popupRequest, setPopupRequest]= useState(false)
+    const [popupRequest, setPopupRequest]= useState([])
     const [listRequest, setListRequest]= useState([])
     const [isPopup, setisPopup] = useState(false)
     const [isPopupProfile, setisPopupProfile] = useState(false)
@@ -146,7 +146,7 @@ const GradeStudent= ({user})=>{
             setisPopupProfile(false);
         });;
       }
-
+    
     return (
         <div>
             {isPopup && 
@@ -173,9 +173,9 @@ const GradeStudent= ({user})=>{
                                     <TableCell>Student Id</TableCell>
                                     {cls.assignmentList.map(ass=>(
                                         <TableCell id={ass._id}>{ass.name}
-                                            <RequestQuoteIcon onClick={()=>setPopupRequest(true)} fontSize="small" style={{top: 10}}></RequestQuoteIcon>
-                                            {popupRequest && 
-                                                <PopUp onClose={()=>{setPopupRequest(false)}}>
+                                            <RequestQuoteIcon onClick={()=>setPopupRequest([ass._id, ass.name])} fontSize="small" style={{top: 10}}></RequestQuoteIcon>
+                                            {popupRequest[0]==ass._id && 
+                                                <PopUp onClose={()=>{setPopupRequest([])}}>
                                                     <Box component="form" noValidate autoComplete="off">
                                                         <Typography variant="h4" component="div" color="black" style={{textAlign: "center", marginBottom: "1.5rem"}}>
                                                             Request a review
@@ -195,7 +195,7 @@ const GradeStudent= ({user})=>{
                                                                 />
                                                             </Grid>
                                                             <Grid item>
-                                                                <Button variant="contained" onClick={()=> sendRequest(ass._id, ass.name)}>Send</Button>
+                                                                <Button variant="contained" onClick={()=> sendRequest(popupRequest[0], popupRequest[1])}>Send</Button>
                                                             </Grid>
                                                         </Grid>
                                                     </Box>

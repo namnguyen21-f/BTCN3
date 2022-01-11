@@ -221,7 +221,7 @@ export default function Header({className , onAddClassHandle, onManageProfile,
                                 </div>}
                             </div>
                             
-                            {clsName != "AdminPage" && <Tooltip title="Add Classroom">
+                            {clsName != "AdminPage" && role=="teacher" && <Tooltip title="Add Classroom">
                                 <IconButton onClick={() => {onAddClassHandle()}}>
                                     <AddIcon></AddIcon>
                                 </IconButton>
