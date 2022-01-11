@@ -242,7 +242,7 @@ export default function Header({className , onAddClassHandle, onManageProfile,
                 </ListItem>
                 <Divider/>
                 <ListItem button>
-                    <ListItemText primary="Trash" />
+                    <ListItemText onClick={() => {localStorage.clear(); window.location.href = "/login"}} primary="Logout" />
                 </ListItem>
                 <Divider/>
             </List>}
