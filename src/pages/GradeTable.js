@@ -39,7 +39,7 @@ const GradeTable= ({user})=>{
     const [cls , setCls] = useState(null);
     const [listStudent, setListStudent]= useState([]);
     const [listStudentSigned, setListStudentSigned]= useState([]);
-    const [popupFile, setPopupFile]= useState(false);
+    const [popupFile, setPopupFile]= useState(null);
     const [listAssignemnt, setListAssignment]= useState([])
     const [listTotalGrade, setListTotalGrade]= useState(null)
     const [finalize, setFinalize]= useState([])
@@ -214,7 +214,7 @@ const GradeTable= ({user})=>{
 
     const popupUpload= (popupState, assId)=>{
         popupState.close();
-        setPopupFile(true);
+        setPopupFile(assId);
     }
 
     const chooseFile= (e)=>{
@@ -418,7 +418,7 @@ const GradeTable= ({user})=>{
                                                     </IconButton>
                                                     <Menu {...bindMenu(popupState)}>
                                                         <MenuItem onClick={()=> {downloadStructAss(popupState)}}>Download</MenuItem>
-                                                        <MenuItem onClick={()=>{popupUpload(popupState)}}>Upload</MenuItem>
+                                                        <MenuItem onClick={()=>{popupUpload(popupState, ass._id)}}>Upload</MenuItem>
                                                     </Menu>
                                                 </React.Fragment>
                                             )
@@ -426,8 +426,8 @@ const GradeTable= ({user})=>{
                                             }
                                         </PopupState>
                                         <CheckCircleIcon onClick={()=>{markFinalize(ass._id, ass)}} color={setColorMark(ass._id) ? "primary": "default"} fontSize="small"></CheckCircleIcon>
-                                        {popupFile && 
-                                            <PopUp onClose={()=>{setPopupFile(false)}}>
+                                        {popupFile==ass._id && 
+                                            <PopUp onClose={()=>{setPopupFile(null)}}>
                                                 <Box component="form" noValidate autoComplete="off">
                                                     <Typography variant="h4" component="div" color="black" style={{textAlign: "center", marginBottom: "1.5rem"}}>
                                                         Select file to upload
